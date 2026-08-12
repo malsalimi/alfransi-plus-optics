@@ -96,9 +96,22 @@ export async function loginAdminAction(prevState: any, formData: FormData) {
       return { success: false, message: "يرجى إدخال اسم المستخدم وكلمة المرور" };
     }
 
-    const user = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({
       where: { username },
     });
+
+    // Auto-create default admin account on demand if DB was fresh
+    if (!user && username === "admin" && password === "admin123") {
+      const passwordHash = await bcrypt.hash("admin123", 10);
+      user = await prisma.user.create({
+        data: {
+          username: "admin",
+          name: "إدارة نظارات الفرنسي بلس",
+          passwordHash,
+          role: "ADMIN",
+        },
+      });
+    }
 
     if (!user) {
       return { success: false, message: "اسم المستخدم أو كلمة المرور غير صحيحة" };

@@ -13,6 +13,13 @@ try {
   console.log("[Build] Running prisma db push...");
   execSync("npx prisma db push --accept-data-loss", { stdio: "inherit", env: process.env });
 
+  console.log("[Build] Running prisma db seed...");
+  try {
+    execSync("npx prisma db seed", { stdio: "inherit", env: process.env });
+  } catch (seedError) {
+    console.warn("[Build] DB seed warning:", seedError.message);
+  }
+
   console.log("[Build] Running next build...");
   execSync("npx next build", { stdio: "inherit", env: process.env });
 
