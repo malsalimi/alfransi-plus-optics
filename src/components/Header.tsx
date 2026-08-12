@@ -85,7 +85,6 @@ export default function Header() {
               alt={dict.brand.name}
               width={220}
               height={56}
-              style={{ width: "auto", height: "auto" }}
               className="h-12 sm:h-14 w-auto object-contain transition-transform group-hover:scale-105"
               priority
             />
