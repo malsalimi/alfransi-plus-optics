@@ -37,21 +37,25 @@ export const metadata: Metadata = {
   authors: [{ name: "نظارات الفرنسي بلس" }],
   creator: "نظارات الفرنسي بلس",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  manifest: "/manifest.json",
   icons: {
-    icon: "/favicon.png",
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/brand/logo-mark.png", type: "image/png" },
+    ],
     shortcut: "/favicon.png",
-    apple: "/brand/logo-mark.png",
+    apple: "/apple-icon.png",
   },
   openGraph: {
     title: "نظارات الفرنسي بلس | للبصريات والسمعيات - صنعاء",
-    description: "أناقة وإبداع .. رؤية بلا صداع - أحدث النظارات الطبية والشمسية والخدمات السمعية متطورة.",
+    description: "أناقة وإبداع .. رؤية بلا صداع - أحدث النظارات الطبية والشمسية والخدمات السمعية المتطورة.",
     siteName: "نظارات الفرنسي بلس",
     images: [
       {
-        url: "/brand/logo-primary.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "لوجو نظارات الفرنسي بلس للبصريات والسمعيات",
+        alt: "نظارات الفرنسي بلس للبصريات والسمعيات",
       },
     ],
     locale: "ar_YE",

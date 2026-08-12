@@ -79,22 +79,15 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-12 h-12 sm:w-14 sm:h-14 overflow-hidden rounded-xl bg-white/5 p-1 border border-[#087E8B]/40 group-hover:border-[#F4C400] transition-all">
+          <div className="relative h-12 w-auto sm:h-14 overflow-hidden py-1 transition-all">
             <Image
-              src="/brand/logo-mark.png"
+              src="/brand/logo-primary.png"
               alt={dict.brand.name}
-              fill
-              className="object-contain"
+              width={220}
+              height={56}
+              className="h-12 sm:h-14 w-auto object-contain transition-transform group-hover:scale-105"
               priority
             />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-lg sm:text-xl font-extrabold text-white tracking-wide leading-tight group-hover:text-[#F4C400] transition-colors">
-              {isArabic ? dict.brand.name : "Al-Fransi Plus"}
-            </span>
-            <span className="text-xs text-[#16C7D9] font-medium tracking-tight">
-              {isArabic ? "للبصريات والسمعيات" : "Optics & Audiology"}
-            </span>
           </div>
         </Link>
 

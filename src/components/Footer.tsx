@@ -25,21 +25,14 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="relative w-12 h-12 overflow-hidden rounded-xl bg-white/5 p-1 border border-[#087E8B]/40">
+              <div className="relative h-16 w-auto overflow-hidden py-1">
                 <Image
-                  src="/brand/logo-mark.png"
+                  src="/brand/logo-footer.png"
                   alt={dict.brand.name}
-                  fill
-                  className="object-contain"
+                  width={240}
+                  height={68}
+                  className="h-16 w-auto object-contain"
                 />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-white leading-tight">
-                  {dict.brand.name}
-                </h3>
-                <p className="text-xs text-[#16C7D9] font-medium">
-                  {isArabic ? "للبصريات والسمعيات" : "Optics & Audiology"}
-                </p>
               </div>
             </div>
 

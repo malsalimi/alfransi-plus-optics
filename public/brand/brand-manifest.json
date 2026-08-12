@@ -1,0 +1,25 @@
+{
+  "name": "نظارات الفرنسي بلس للبصريات والسمعيات",
+  "short_name": "الفرنسي بلس",
+  "brand_colors": {
+    "primary_gold": "#F8C10C",
+    "dark_gold": "#D99A00",
+    "deep_navy": "#071A2B",
+    "secondary_navy": "#0B2940",
+    "storefront_cyan": "#087E8B",
+    "bright_cyan": "#16C7D9",
+    "silver_highlight": "#EAEAEF",
+    "surface_white": "#FFFFFF"
+  },
+  "assets": {
+    "primary_logo": "/brand/logo-primary.png",
+    "header_logo": "/brand/logo-[#16C7D9]",
+    "footer_logo": "/brand/logo-footer.png",
+    "marketing_logo": "/brand/logo-marketing.png",
+    "brand_mark": "/brand/logo-mark.png",
+    "master_source": "/brand/logo-master.png",
+    "app_icon": "/brand/icon-512.png",
+    "favicon": "/favicon.png",
+    "og_image": "/og-image.png"
+  }
+}
