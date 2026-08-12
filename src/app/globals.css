@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --brand-cyan: #087e8b;
+    --brand-cyan-dark: #075f69;
+    --brand-cyan-light: #16c7d9;
+    --brand-navy: #071a2b;
+    --brand-navy-light: #0b2940;
+    --brand-gold: #f4c400;
+    --brand-gold-dark: #d99a00;
+    --brand-white: #ffffff;
+    --brand-surface: #f7fafc;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--brand-surface);
+    color: #1e293b;
+    font-family: var(--font-tajawal), "Tajawal", "Inter", system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom store visual style classes */
+.store-gradient-header {
+  background: linear-gradient(135deg, #071a2b 0%, #0b2940 50%, #087e8b 100%);
+}
+
+.store-gradient-hero {
+  background: radial-gradient(circle at top right, #0b2940 0%, #071a2b 70%, #040d16 100%);
+}
+
+.gold-glow {
+  text-shadow: 0 0 12px rgba(244, 196, 0, 0.4);
+}
+
+.cyan-glow {
+  box-shadow: 0 0 20px rgba(22, 199, 217, 0.25);
+}
+
+.badge-gold {
+  background-color: #f4c400;
+  color: #071a2b;
+  font-weight: 700;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #071a2b;
+}
+::-webkit-scrollbar-thumb {
+  background: #087e8b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f4c400;
 }

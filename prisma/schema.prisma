@@ -1,0 +1,131 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  name         String
+  passwordHash String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Category {
+  id            String    @id @default(uuid())
+  slug          String    @unique
+  nameAr        String
+  nameEn        String
+  descriptionAr String?
+  descriptionEn String?
+  icon          String?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  products      Product[]
+}
+
+model Brand {
+  id            String    @id @default(uuid())
+  slug          String    @unique
+  nameAr        String
+  nameEn        String
+  logoUrl       String?
+  descriptionAr String?
+  descriptionEn String?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  products      Product[]
+}
+
+model Product {
+  id            String         @id @default(uuid())
+  slug          String         @unique
+  nameAr        String
+  nameEn        String
+  descAr        String
+  descEn        String
+  sku           String?        @unique
+  price         Float?
+  previousPrice Float?
+  stockQuantity Int            @default(10)
+  isAvailable   Boolean        @default(true)
+  isFeatured    Boolean        @default(false)
+  isActive      Boolean        @default(true)
+  specsAr       String?
+  specsEn       String?
+  categoryId    String
+  category      Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  brandId       String?
+  brand         Brand?         @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  images        ProductImage[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  url       String
+  altAr     String?
+  altEn     String?
+  isPrimary Boolean  @default(false)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model Service {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  nameAr      String
+  nameEn      String
+  descAr      String
+  descEn      String
+  icon        String?
+  type        String   @default("OPTICAL")
+  featuresAr  String?
+  featuresEn  String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Appointment {
+  id            String   @id @default(uuid())
+  customerName  String
+  phone         String
+  serviceNameAr String
+  serviceNameEn String
+  preferredDate String
+  preferredTime String
+  notes         String?
+  status        String   @default("PENDING")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model ContactInquiry {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String
+  message   String
+  status    String   @default("UNREAD")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BusinessSetting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  valueAr   String
+  valueEn   String
+  category  String   @default("GENERAL")
+  updatedAt DateTime @updatedAt
+}
