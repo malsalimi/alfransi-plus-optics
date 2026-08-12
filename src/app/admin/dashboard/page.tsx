@@ -1,18 +1,21 @@
 import React from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getAdminSession, clearAdminSession } from "@/lib/auth";
+import { getAdminSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { logoutAdminAction } from "@/lib/actions";
+import AdminLayout from "@/components/admin/AdminLayout";
+import { formatWhatsAppNumber } from "@/lib/whatsapp";
 import {
   Glasses,
   Calendar,
   MessageCircle,
-  Users,
-  LogOut,
-  CheckCircle2,
   Clock,
-  LayoutDashboard,
+  ArrowUpRight,
+  TrendingUp,
+  ExternalLink,
+  PlusCircle,
+  Eye,
+  CheckCircle,
 } from "lucide-react";
 
 export const revalidate = 0;
@@ -23,139 +26,238 @@ export default async function AdminDashboardPage() {
     redirect("/admin/login");
   }
 
-  const [productsCount, appointmentsCount, inquiriesCount, recentAppointments, recentInquiries] =
-    await Promise.all([
-      prisma.product.count().catch(() => 0),
-      prisma.appointment.count({ where: { status: "PENDING" } }).catch(() => 0),
-      prisma.contactInquiry.count({ where: { status: "UNREAD" } }).catch(() => 0),
-      prisma.appointment.findMany({
+  const [
+    productsCount,
+    appointmentsCount,
+    inquiriesCount,
+    recentAppointments,
+    recentInquiries,
+  ] = await Promise.all([
+    prisma.product.count().catch(() => 0),
+    prisma.appointment.count({ where: { status: "PENDING" } }).catch(() => 0),
+    prisma.contactInquiry.count({ where: { status: "UNREAD" } }).catch(() => 0),
+    prisma.appointment
+      .findMany({
         take: 5,
         orderBy: { createdAt: "desc" },
-      }).catch(() => []),
-      prisma.contactInquiry.findMany({
+      })
+      .catch(() => []),
+    prisma.contactInquiry
+      .findMany({
         take: 5,
         orderBy: { createdAt: "desc" },
-      }).catch(() => []),
-    ]);
+      })
+      .catch(() => []),
+  ]);
 
   return (
-    <div className="min-h-screen bg-[#071A2B] text-slate-100 flex flex-col">
-      {/* Admin Navbar */}
-      <header className="bg-[#0B2940] border-b border-[#087E8B]/40 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <LayoutDashboard className="w-6 h-6 text-[#F4C400]" />
-          <div>
-            <h1 className="text-base font-extrabold text-white">لوحة تحكم إدارة نظارات الفرنسي بلس</h1>
-            <p className="text-[11px] text-[#16C7D9]">مرحباً، {session.username}</p>
+    <AdminLayout
+      activeTab="dashboard"
+      username={session.username}
+      counts={{
+        appointments: appointmentsCount,
+        products: productsCount,
+        inquiries: inquiriesCount,
+      }}
+    >
+      <div className="space-y-8">
+        {/* Welcome Banner */}
+        <div className="bg-gradient-to-r from-[#0B2940] via-[#087E8B]/30 to-[#0B2940] p-6 sm:p-8 rounded-3xl border border-[#087E8B]/40 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-extrabold bg-[#F4C400]/20 text-[#F4C400] border border-[#F4C400]/30">
+              <TrendingUp className="w-3.5 h-3.5" />
+              <span>نظام التقرير المباشر</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
+              مرحباً بك، {session.username} 👋
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed">
+              إليك الملخص اليومي لحركة الحجوزات والمنتجات واستفسارات العملاء في مركز نظارات الفرنسي بلس.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/admin/products"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-extrabold bg-[#F4C400] hover:bg-[#d99a00] text-[#071A2B] shadow-lg transition-all"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>إضافة منتج جديد</span>
+            </Link>
+            <Link
+              href="/admin/appointments"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-extrabold bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all"
+            >
+              <Calendar className="w-4 h-4 text-[#16C7D9]" />
+              <span>إدارة الحجوزات</span>
+            </Link>
           </div>
         </div>
 
-        <form action={logoutAdminAction}>
-          <button
-            type="submit"
-            className="flex items-center gap-1.5 bg-red-500/20 hover:bg-red-500 text-red-300 hover:text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border border-red-500/30"
-          >
-            <LogOut className="w-4 h-4" />
-            <span>خروج</span>
-          </button>
-        </form>
-      </header>
-
-      {/* Admin Subnav Tabs */}
-      <div className="bg-[#040D16] border-b border-white/10 px-6 py-3 flex gap-4 text-xs font-bold">
-        <Link href="/admin/dashboard" className="text-[#F4C400] underline">
-          الرئيسية
-        </Link>
-        <Link href="/admin/appointments" className="text-slate-300 hover:text-white">
-          إدارة الحجوزات ({appointmentsCount})
-        </Link>
-        <Link href="/admin/products" className="text-slate-300 hover:text-white">
-          إدارة المنتجات ({productsCount})
-        </Link>
-      </div>
-
-      {/* Dashboard Body */}
-      <main className="flex-grow p-6 max-w-7xl mx-auto w-full space-y-8">
-        {/* Metric Cards */}
+        {/* Key Metric Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="bg-[#0B2940] p-6 rounded-2xl border border-[#087E8B]/40 space-y-2">
+          <div className="bg-[#0B2940] p-6 rounded-2xl border border-[#087E8B]/40 shadow-lg space-y-3 relative overflow-hidden group hover:border-[#16C7D9]/60 transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-300">إجمالي المنتجات</span>
-              <Glasses className="w-5 h-5 text-[#16C7D9]" />
+              <span className="text-xs font-bold text-slate-300">كتالوج المنتجات</span>
+              <div className="w-10 h-10 rounded-xl bg-[#087E8B]/20 border border-[#087E8B]/40 flex items-center justify-center text-[#16C7D9]">
+                <Glasses className="w-5 h-5" />
+              </div>
             </div>
-            <h3 className="text-3xl font-black text-white">{productsCount}</h3>
-            <Link href="/admin/products" className="text-[11px] text-[#16C7D9] hover:underline">
-              إدارة المنتجات والكتالوج →
+            <div className="space-y-1">
+              <h3 className="text-3xl font-black text-white">{productsCount}</h3>
+              <p className="text-[11px] text-slate-400">إجمالي النظارات والسماعات المتاحة</p>
+            </div>
+            <Link
+              href="/admin/products"
+              className="inline-flex items-center gap-1 text-xs font-bold text-[#16C7D9] hover:underline pt-2"
+            >
+              <span>إدارة الكتالوج</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <div className="bg-[#0B2940] p-6 rounded-2xl border border-[#087E8B]/40 space-y-2">
+          <div className="bg-[#0B2940] p-6 rounded-2xl border border-[#F4C400]/40 shadow-lg space-y-3 relative overflow-hidden group hover:border-[#F4C400]/70 transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-300">طلبات حجز معلقة</span>
-              <Calendar className="w-5 h-5 text-[#F4C400]" />
+              <span className="text-xs font-bold text-slate-300">مواعيد معلقة</span>
+              <div className="w-10 h-10 rounded-xl bg-[#F4C400]/20 border border-[#F4C400]/40 flex items-center justify-center text-[#F4C400]">
+                <Calendar className="w-5 h-5" />
+              </div>
             </div>
-            <h3 className="text-3xl font-black text-[#F4C400]">{appointmentsCount}</h3>
-            <Link href="/admin/appointments" className="text-[11px] text-[#F4C400] hover:underline">
-              استعراض المواعيد والتأكيد →
+            <div className="space-y-1">
+              <h3 className="text-3xl font-black text-[#F4C400]">{appointmentsCount}</h3>
+              <p className="text-[11px] text-slate-400">طلبات حجز بانتظار التأكيد</p>
+            </div>
+            <Link
+              href="/admin/appointments"
+              className="inline-flex items-center gap-1 text-xs font-bold text-[#F4C400] hover:underline pt-2"
+            >
+              <span>معالجة الحجوزات</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <div className="bg-[#0B2940] p-6 rounded-2xl border border-[#087E8B]/40 space-y-2">
+          <div className="bg-[#0B2940] p-6 rounded-2xl border border-[#25D366]/40 shadow-lg space-y-3 relative overflow-hidden group hover:border-[#25D366]/70 transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-300">استفسارات غير مقروءة</span>
-              <MessageCircle className="w-5 h-5 text-[#25D366]" />
+              <span className="text-xs font-bold text-slate-300">رسائل غير مقروءة</span>
+              <div className="w-10 h-10 rounded-xl bg-[#25D366]/20 border border-[#25D366]/40 flex items-center justify-center text-[#25D366]">
+                <MessageCircle className="w-5 h-5" />
+              </div>
             </div>
-            <h3 className="text-3xl font-black text-[#25D366]">{inquiriesCount}</h3>
-            <span className="text-[11px] text-slate-400">صندوق الوارد</span>
+            <div className="space-y-1">
+              <h3 className="text-3xl font-black text-[#25D366]">{inquiriesCount}</h3>
+              <p className="text-[11px] text-slate-400">استفسارات جديدة من الموقع</p>
+            </div>
+            <Link
+              href="/admin/inquiries"
+              className="inline-flex items-center gap-1 text-xs font-bold text-[#25D366] hover:underline pt-2"
+            >
+              <span>فتح صندوق الوارد</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
 
-        {/* Recent Appointments Table */}
-        <div className="bg-[#0B2940] rounded-2xl border border-[#087E8B]/40 p-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[#F4C400]" />
-              <span>أحدث طلبات الحجز</span>
-            </h3>
-            <Link href="/admin/appointments" className="text-xs text-[#16C7D9] hover:underline">
-              عرض الكل
-            </Link>
-          </div>
+        {/* Dashboard Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Recent Appointments */}
+          <div className="bg-[#0B2940] rounded-2xl border border-[#087E8B]/40 p-6 space-y-4 shadow-lg">
+            <div className="flex items-center justify-between pb-3 border-b border-white/10">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <Clock className="w-4 h-4 text-[#F4C400]" />
+                <span>أحدث طلبات المواعيد</span>
+              </h3>
+              <Link href="/admin/appointments" className="text-xs font-bold text-[#16C7D9] hover:underline">
+                عرض الكل ({appointmentsCount})
+              </Link>
+            </div>
 
-          {recentAppointments.length === 0 ? (
-            <p className="text-xs text-slate-400 py-4 text-center">لا توجد طلبات حجز حالياً.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs text-right text-slate-200">
-                <thead className="bg-slate-900/60 text-slate-400 border-b border-white/10">
-                  <tr>
-                    <th className="p-3">اسم العميل</th>
-                    <th className="p-3">الهاتف</th>
-                    <th className="p-3">الخدمة</th>
-                    <th className="p-3">التاريخ والوقت</th>
-                    <th className="p-3">الحالة</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5">
-                  {recentAppointments.map((item: any) => (
-                    <tr key={item.id} className="hover:bg-white/5">
-                      <td className="p-3 font-bold">{item.customerName}</td>
-                      <td className="p-3 dir-ltr text-right font-mono">{item.phone}</td>
-                      <td className="p-3">{item.serviceNameAr}</td>
-                      <td className="p-3">{item.preferredDate} - {item.preferredTime}</td>
-                      <td className="p-3">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#F4C400]/20 text-[#F4C400]">
+            {recentAppointments.length === 0 ? (
+              <p className="text-xs text-slate-400 py-8 text-center">لا توجد طلبات حجز حالياً.</p>
+            ) : (
+              <div className="space-y-3">
+                {recentAppointments.map((item: any) => (
+                  <div
+                    key={item.id}
+                    className="p-3.5 rounded-xl bg-[#040D16] border border-white/5 flex items-center justify-between gap-3 hover:border-white/10 transition-all"
+                  >
+                    <div className="space-y-1">
+                      <div className="text-xs font-bold text-white flex items-center gap-2">
+                        <span>{item.customerName}</span>
+                        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-[#F4C400]/20 text-[#F4C400]">
                           {item.status}
                         </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </div>
+                      <div className="text-[11px] text-slate-400">
+                        {item.serviceNameAr} • {item.preferredDate} ({item.preferredTime})
+                      </div>
+                    </div>
+
+                    <a
+                      href={`https://wa.me/${formatWhatsAppNumber(item.phone)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-lg bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366] hover:text-[#071A2B] transition-all"
+                      title="مراسلة الواتساب"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Recent Inquiries */}
+          <div className="bg-[#0B2940] rounded-2xl border border-[#087E8B]/40 p-6 space-y-4 shadow-lg">
+            <div className="flex items-center justify-between pb-3 border-b border-white/10">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <MessageCircle className="w-4 h-4 text-[#25D366]" />
+                <span>أحدث استفسارات التواصل</span>
+              </h3>
+              <Link href="/admin/inquiries" className="text-xs font-bold text-[#16C7D9] hover:underline">
+                صندوق الرسائل ({inquiriesCount})
+              </Link>
             </div>
-          )}
+
+            {recentInquiries.length === 0 ? (
+              <p className="text-xs text-slate-400 py-8 text-center">لا توجد رسائل حالياً.</p>
+            ) : (
+              <div className="space-y-3">
+                {recentInquiries.map((item: any) => (
+                  <div
+                    key={item.id}
+                    className="p-3.5 rounded-xl bg-[#040D16] border border-white/5 flex items-center justify-between gap-3 hover:border-white/10 transition-all"
+                  >
+                    <div className="space-y-1">
+                      <div className="text-xs font-bold text-white flex items-center gap-2">
+                        <span>{item.name}</span>
+                        {item.status === "UNREAD" && (
+                          <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-[#25D366] text-[#071A2B]">
+                            جديد
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-[11px] text-slate-300 truncate max-w-xs">
+                        "{item.message}"
+                      </div>
+                    </div>
+
+                    <a
+                      href={`https://wa.me/${formatWhatsAppNumber(item.phone)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-lg bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366] hover:text-[#071A2B] transition-all"
+                      title="مراسلة الواتساب"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

@@ -168,3 +168,59 @@ export async function deleteProductAction(id: string) {
     return { success: false };
   }
 }
+
+// Admin Create Product Action
+export async function createProductAction(prevState: any, formData: FormData) {
+  try {
+    const nameAr = formData.get("nameAr") as string;
+    const nameEn = formData.get("nameEn") as string;
+    const categoryId = formData.get("categoryId") as string;
+    const descAr = formData.get("descAr") as string;
+    const descEn = (formData.get("descEn") as string) || descAr;
+    const priceStr = formData.get("price") as string;
+    const sku = formData.get("sku") as string;
+    const stockQuantityStr = formData.get("stockQuantity") as string;
+    const imageUrl = (formData.get("imageUrl") as string) || "/brand/logo-marketing.png";
+
+    if (!nameAr || !categoryId || !descAr) {
+      return { success: false, message: "يرجى تعبئة اسم المنتج والتصنيف والوصف" };
+    }
+
+    const slug = nameAr
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/[\s_-]+/g, "-") + "-" + Date.now().toString().slice(-4);
+
+    const product = await prisma.product.create({
+      data: {
+        slug: slug || `product-${Date.now()}`,
+        nameAr,
+        nameEn: nameEn || nameAr,
+        descAr,
+        descEn,
+        sku: sku || null,
+        price: priceStr ? parseFloat(priceStr) : null,
+        stockQuantity: stockQuantityStr ? parseInt(stockQuantityStr, 10) : 10,
+        categoryId,
+        isAvailable: true,
+        isFeatured: true,
+        images: {
+          create: [
+            {
+              url: imageUrl,
+              isPrimary: true,
+            },
+          ],
+        },
+      },
+    });
+
+    revalidatePath("/products");
+    revalidatePath("/admin/products");
+    return { success: true, message: "تمت إضافة المنتج إلى الكتالوج بنجاح" };
+  } catch (error: any) {
+    console.error("Create product error:", error);
+    return { success: false, message: error?.message || "حدث خطأ أثناء إضافة المنتج" };
+  }
+}
