@@ -16,8 +16,8 @@ export function formatWhatsAppNumber(phone: string): string {
 
 export function getGeneralWhatsAppLink(isArabic: boolean = true): string {
   const message = isArabic
-    ? "السلام عليكم، أريد الاستفسار عن خدمات ومعروضات مركز نظارات الفرنسي بلس."
-    : "Hello, I would like to inquire about Al-Fransi Plus Optics & Audiology services.";
+    ? "السلام عليكم، أتواصل معكم عبر الموقع الإلكتروني لـ مركز نظارات الفرنسي بلس للاستفسار عن الخدمات والمعروضات."
+    : "Hello, I am contacting you via the official Al-Fransi Plus Optics website to inquire about your services and products.";
   
   const formattedNumber = formatWhatsAppNumber(WHATSAPP_NUMBER);
   return `https://wa.me/${formattedNumber}?text=${encodeURIComponent(message)}`;
@@ -32,10 +32,10 @@ export function getProductWhatsAppLink(
   let message = "";
 
   if (isArabic) {
-    message = `السلام عليكم، أريد الاستفسار عن هذا المنتج من نظارات الفرنسي بلس:\n- اسم المنتج: ${productName}`;
+    message = `السلام عليكم، أتواصل معكم عبر الموقع الإلكتروني لـ مركز نظارات الفرنسي بلس للاستفسار عن هذا المنتج:\n- اسم المنتج: ${productName}`;
     if (sku) message += `\n- رمز المنتج (SKU): ${sku}`;
   } else {
-    message = `Hello, I would like to inquire about this product from Al-Fransi Plus Optics:\n- Product Name: ${productName}`;
+    message = `Hello, I am contacting you via the official Al-Fransi Plus Optics website regarding this product:\n- Product Name: ${productName}`;
     if (sku) message += `\n- SKU Code: ${sku}`;
   }
 
@@ -51,10 +51,10 @@ export function getAppointmentWhatsAppLink(
   let message = "";
 
   if (isArabic) {
-    message = `السلام عليكم، أود حجز موعد لفحص/خدمة (${serviceName}) في مركز نظارات الفرنسي بلس.`;
+    message = `السلام عليكم، أتواصل معكم عبر الموقع الإلكتروني لـ مركز نظارات الفرنسي بلس لحجز موعد لخدمة (${serviceName}).`;
     if (customerName) message += `\n- الاسم: ${customerName}`;
   } else {
-    message = `Hello, I would like to book an appointment for (${serviceName}) at Al-Fransi Plus Optics.`;
+    message = `Hello, I am contacting you via the official Al-Fransi Plus Optics website to book an appointment for (${serviceName}).`;
     if (customerName) message += `\n- Name: ${customerName}`;
   }
 
