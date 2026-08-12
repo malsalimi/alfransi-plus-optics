@@ -151,7 +151,8 @@ export default function Footer() {
         {/* Copyright & Legal */}
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <p>{dict.footer.rights}</p>
-          <div className="flex items-center gap-4">
+
+          <div className="flex flex-wrap items-center gap-4">
             <Link href="/privacy" className="hover:text-white transition-colors">
               {dict.footer.privacy}
             </Link>
@@ -159,6 +160,16 @@ export default function Footer() {
             <Link href="/terms" className="hover:text-white transition-colors">
               {dict.footer.terms}
             </Link>
+            <span>•</span>
+            <a
+              href="https://salimi-tech.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-slate-300 hover:text-[#F4C400] font-bold transition-all px-2 py-0.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10"
+            >
+              <span>تصميم وتطوير</span>
+              <span className="text-[#F4C400] font-black dir-ltr">Salimi-tech</span>
+            </a>
           </div>
         </div>
       </div>
