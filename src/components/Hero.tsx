@@ -105,6 +105,7 @@ export default function Hero() {
                   src="/brand/logo-primary.png"
                   alt={dict.brand.name}
                   fill
+                  sizes="(max-width: 768px) 100vw, 400px"
                   className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                   priority
                 />

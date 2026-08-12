@@ -23,9 +23,10 @@ export default function AdminLoginPage() {
           <div className="relative w-16 h-16 mx-auto overflow-hidden rounded-2xl bg-white/5 p-2 border border-[#087E8B]/40">
             <Image
               src="/brand/logo-mark.png"
-              alt="Al-Fransi Plus Admin"
+              alt="الفرنسي بلس"
               fill
-              className="object-contain p-1"
+              sizes="80px"
+              className="object-contain"
               priority
             />
           </div>

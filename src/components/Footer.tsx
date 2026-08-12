@@ -31,6 +31,7 @@ export default function Footer() {
                   alt={dict.brand.name}
                   width={240}
                   height={68}
+                  style={{ width: "auto", height: "auto" }}
                   className="h-16 w-auto object-contain"
                 />
               </div>

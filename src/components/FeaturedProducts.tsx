@@ -118,6 +118,7 @@ export default function FeaturedProducts({ products }: { products: any[] }) {
                       src={primaryImage}
                       alt={name}
                       fill
+                      sizes="(max-width: 768px) 100vw, 300px"
                       className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"
                     />
 
