@@ -46,16 +46,29 @@ async function main() {
     },
   });
 
-  const catLenses = await prisma.category.upsert({
-    where: { slug: "contact-lenses" },
+  const catProtection = await prisma.category.upsert({
+    where: { slug: "protection-glasses" },
     update: {},
     create: {
-      slug: "contact-lenses",
-      nameAr: "عدسات لاصقة",
-      nameEn: "Contact Lenses",
-      descriptionAr: "عدسات لاصقة طبية وتجميلية ملونة ذات نفاذية عالية للأكسجين.",
-      descriptionEn: "Medical prescription & aesthetic color contact lenses with high oxygen permeability.",
-      icon: "Eye",
+      slug: "protection-glasses",
+      nameAr: "نظارات حماية (بلوكت)",
+      nameEn: "Blue Light Screen Protection",
+      descriptionAr: "نظارات حماية مخصصة للشاشات والكمبيوتر تمنع إجهاد العين والأشعة الزرقاء الضارة.",
+      descriptionEn: "Blue-cut computer and gaming glasses preventing digital eye strain.",
+      icon: "Shield",
+    },
+  });
+
+  const catFashion = await prisma.category.upsert({
+    where: { slug: "fashion-glasses" },
+    update: {},
+    create: {
+      slug: "fashion-glasses",
+      nameAr: "نظارات هنجمة واستعراض",
+      nameEn: "Fashion & Lifestyle Glasses",
+      descriptionAr: "نظارات عصرية وكاجوال مخصصة للهنجمة والأناقة اليومية بأحدث صيحات الموضة.",
+      descriptionEn: "Stylish lifestyle and trend-setting fashion eyewear.",
+      icon: "Sparkles",
     },
   });
 
@@ -72,16 +85,16 @@ async function main() {
     },
   });
 
-  const catAccessories = await prisma.category.upsert({
-    where: { slug: "accessories" },
+  const catLenses = await prisma.category.upsert({
+    where: { slug: "contact-lenses" },
     update: {},
     create: {
-      slug: "accessories",
-      nameAr: "إكسسوارات ومحاليل",
-      nameEn: "Accessories & Solutions",
-      descriptionAr: "محاليل تنظيف العدسات، حافظات فاخرة، وسلاسل نظارات راقية.",
-      descriptionEn: "Lens care solutions, designer cases, and eyewear accessories.",
-      icon: "Package",
+      slug: "contact-lenses",
+      nameAr: "عدسات لاصقة",
+      nameEn: "Contact Lenses",
+      descriptionAr: "عدسات لاصقة طبية وتجميلية ملونة ذات نفاذية عالية للأكسجين.",
+      descriptionEn: "Medical prescription & aesthetic color contact lenses with high oxygen permeability.",
+      icon: "Eye",
     },
   });
 
@@ -134,63 +147,14 @@ async function main() {
     },
   });
 
-  // Seed Services
-  await prisma.service.upsert({
-    where: { slug: "eye-exam" },
-    update: {},
-    create: {
-      slug: "eye-exam",
-      nameAr: "فحص النظر الكمبيوتري الشامل",
-      nameEn: "Comprehensive Computerized Eye Exam",
-      descAr: "فحص النظر وتحديد حدة الابصار وقوة العدسات المطلوبة بأحدث أجهزة الكمبيوتر الدقيقة وتحت إشراف كادر متخصص.",
-      descEn: "Advanced digital autorefraction and visual acuity assessment using precision optical equipment.",
-      type: "OPTICAL",
-      featuresAr: JSON.stringify(["فحص الكمبيوتر الدقيق", "قياس انكسار الضوء ورؤية الألوان", "استشارة فحص فورية", "تحديد انحراف القرنية"]),
-      featuresEn: JSON.stringify(["Automated Computer Refraction", "Astigmatism & Color Vision Test", "Instant Consultation", "Precision Diopter Measurement"]),
-      icon: "Eye",
-    },
-  });
-
-  await prisma.service.upsert({
-    where: { slug: "custom-lenses" },
-    update: {},
-    create: {
-      slug: "custom-lenses",
-      nameAr: "تفصيل وتجهيز العدسات الطبية",
-      nameEn: "Custom Prescription Lens Fitting",
-      descAr: "قص وتجهيز العدسات الطبية المضادة للخدش والمقاومة للإشعاعات والضوء الأزرق بأعلى معايير الجودة.",
-      descEn: "High-index lens custom edging, anti-scratch coating, Blue-Cut protection, and photochromic lenses.",
-      type: "OPTICAL",
-      featuresAr: JSON.stringify(["عدسات خفيفة ومضادة للكسر", "طلاء حماية من الشاشات Blue-Cut", "عدسات مظللة تدريجياً Photogray", "ضمان الدقة والراحة"]),
-      featuresEn: JSON.stringify(["High Index Lightweight Lens", "Blue-Light Screen Filter", "Photochromic Transition", "Comfort Guarantee"]),
-      icon: "Sparkles",
-    },
-  });
-
-  await prisma.service.upsert({
-    where: { slug: "hearing-assessment" },
-    update: {},
-    create: {
-      slug: "hearing-assessment",
-      nameAr: "تقييم السمع واختبار السماعات",
-      nameEn: "Audiology Hearing Assessment & Tuning",
-      descAr: "قياس درجات ضعف السمع واختبار استجابة الأذن وتجربة أفضل السماعات الطبية المناسبة لكل حالة.",
-      descEn: "Pure tone audiometry, hearing loss diagnostic test, and medical hearing aid programming.",
-      type: "AUDIOLOGY",
-      featuresAr: JSON.stringify(["قياس عتبة السمع بالكمبيوتر", "تجربة سماعات طبية غير مرئية", "برمجة رقمية مخصصة", "صيانة وضبط السماعات"]),
-      featuresEn: JSON.stringify(["Computer Audiometry", "In-the-Canal Hearing Aid Test", "Digital Audio Programming", "Maintenance & Calibration"]),
-      icon: "Volume2",
-    },
-  });
-
-  // Seed Sample Products
+  // Seed Sample Products across categories
   await prisma.product.upsert({
     where: { slug: "al-fransi-titanium-optics-01" },
     update: {},
     create: {
       slug: "al-fransi-titanium-optics-01",
-      nameAr: "نظارة الفرنسي تيتانيوم الترا فليكس",
-      nameEn: "Al-Fransi Ultra-Flex Titanium Frame",
+      nameAr: "نظارة الفرنسي تيتانيوم الترا فليكس الطبية",
+      nameEn: "Al-Fransi Ultra-Flex Titanium Optical Frame",
       descAr: "إطار نظارة طبية فاخر مصنوع من التيتانيوم الخفيف والمقاوم للكسر والمرونة العالية. مريحة جداً للاستخدام اليومي المستمر.",
       descEn: "Premium ultra-lightweight titanium prescription optical frame. Flexible, hypoallergenic, and built for all-day comfort.",
       sku: "AFP-OPT-101",
@@ -200,14 +164,13 @@ async function main() {
       isFeatured: true,
       categoryId: catEyeglasses.id,
       brandId: brandRayBan.id,
-      specsAr: JSON.stringify({ "المادة": "تيتانيوم فليكس", "الوزن": "12 جرام", "الشكل": "مستطيل مدرن", "الجنس": "رجالي / نسائي" }),
-      specsEn: JSON.stringify({ "Material": "Flex Titanium", "Weight": "12g", "Shape": "Modern Rectangle", "Gender": "Unisex" }),
+      specsAr: JSON.stringify({ "النوع": "طبية", "المادة": "تيتانيوم فليكس", "الوزن": "12 جرام", "الجنس": "رجالي / نسائي" }),
+      specsEn: JSON.stringify({ "Type": "Optical", "Material": "Flex Titanium", "Weight": "12g", "Gender": "Unisex" }),
       images: {
         create: [
           {
             url: "/brand/logo-primary.png",
-            altAr: "نظارة الفرنسي تيتانيوم الترا فليكس",
-            altEn: "Al-Fransi Ultra-Flex Titanium Frame",
+            altAr: "نظارة الفرنسي تيتانيوم الترا فليكس الطبية",
             isPrimary: true,
           },
         ],
@@ -221,8 +184,8 @@ async function main() {
     create: {
       slug: "rayban-wayfarer-classic-gold",
       nameAr: "نظارة ريبان شمسية كلاسيك - إطار ذهبي",
-      nameEn: "Ray-Ban Classic Aviator Gold Lens",
-      descAr: "نظارة شمسية أصلية بمظهر كلاسيكي جذاب وعدسات مستقطبة Polarized توفر رؤية حادة بدون انعكاسات.",
+      nameEn: "Ray-Ban Classic Aviator Gold Lens Sunglasses",
+      descAr: "نظارة شمسية أصلية بمظهر كلاسيكي جذاب وعدسات مستقطبة Polarized توفر رؤية حادة بدون انعكاسات ورؤية حرة.",
       descEn: "Authentic Ray-Ban polarized sunglasses featuring a classic gold metallic frame and crystal UV400 lenses.",
       sku: "AFP-SUN-202",
       price: 160,
@@ -231,14 +194,73 @@ async function main() {
       isFeatured: true,
       categoryId: catSunglasses.id,
       brandId: brandRayBan.id,
-      specsAr: JSON.stringify({ "العدسة": "Polarized UV400", "الإطار": "معدن ذهبي خارق", "بلد الصنع": "إيطاليا" }),
-      specsEn: JSON.stringify({ "Lens": "Polarized UV400", "Frame": "Gold Metal", "Made In": "Italy" }),
+      specsAr: JSON.stringify({ "النوع": "شمسية", "العدسة": "Polarized UV400", "الإطار": "معدن ذهبي", "بلد الصنع": "إيطاليا" }),
+      specsEn: JSON.stringify({ "Type": "Sunglasses", "Lens": "Polarized UV400", "Frame": "Gold Metal", "Made In": "Italy" }),
       images: {
         create: [
           {
             url: "/brand/logo-primary.png",
             altAr: "نظارة ريبان شمسية كلاسيك",
-            altEn: "Ray-Ban Classic Aviator Gold Lens",
+            isPrimary: true,
+          },
+        ],
+      },
+    },
+  });
+
+  await prisma.product.upsert({
+    where: { slug: "bluecut-[#087E8B]-protection-frame" },
+    update: {},
+    create: {
+      slug: "bluecut-[#087E8B]-protection-frame",
+      nameAr: "نظارة حماية الشاشات والكمبيوتر (Blue-Cut)",
+      nameEn: "Blue-Cut Digital Protection Glasses",
+      descAr: "نظارة حماية مخصصة لحجب الضوء الأزرق الضار الصادر من الشاشات والهواتف، تمنع إجهاد العين والصداع أثناء العمل والمكتب.",
+      descEn: "Advanced blue-light filter computer glasses preventing digital eye strain, fatigue and headaches.",
+      sku: "AFP-PRO-303",
+      price: 45,
+      stockQuantity: 20,
+      isAvailable: true,
+      isFeatured: true,
+      categoryId: catProtection.id,
+      brandId: brandZeiss.id,
+      specsAr: JSON.stringify({ "النوع": "حماية شاشات", "العدسة": "Blue-Cut 100%", "الإطار": "مريح خفيف الوزن" }),
+      specsEn: JSON.stringify({ "Type": "Screen Protection", "Lens": "Blue-Cut Filter", "Frame": "Lightweight Polycarbonate" }),
+      images: {
+        create: [
+          {
+            url: "/brand/logo-primary.png",
+            altAr: "نظارة حماية الشاشات والكمبيوتر Blue-Cut",
+            isPrimary: true,
+          },
+        ],
+      },
+    },
+  });
+
+  await prisma.product.upsert({
+    where: { slug: "fashion-trend-lifestyle-sunglasses" },
+    update: {},
+    create: {
+      slug: "fashion-trend-lifestyle-sunglasses",
+      nameAr: "نظارة كاجوال عصرية للهنجمة والاستعراض",
+      nameEn: "Fashion & Trend Lifestyle Eyewear",
+      descAr: "نظارات عصرية جذابة بتصميم مودرن للهنجمة والأناقة في المناسبات والخروجات مع حماية شمسية ممتازة.",
+      descEn: "Stylish fashion statement eyewear designed for casual wear, trend-setting look and daily style.",
+      sku: "AFP-FAS-404",
+      price: 55,
+      stockQuantity: 12,
+      isAvailable: true,
+      isFeatured: true,
+      categoryId: catFashion.id,
+      brandId: brandRayBan.id,
+      specsAr: JSON.stringify({ "النوع": "استعراض وهنجمة", "التصميم": "مودرن تريند", "الجنس": "للشباب والجنسين" }),
+      specsEn: JSON.stringify({ "Type": "Fashion / Lifestyle", "Design": "Modern Trend", "Gender": "Unisex" }),
+      images: {
+        create: [
+          {
+            url: "/brand/logo-primary.png",
+            altAr: "نظارة كاجوال عصرية للهنجمة والاستعراض",
             isPrimary: true,
           },
         ],
@@ -255,21 +277,20 @@ async function main() {
       nameEn: "Phonak Audéo Lumity Digital Hearing Aid",
       descAr: "سماعة طبية متطورة للغاية تقترن بالبلوتوث مع الهواتف، غير مرئية داخل الأذن، مزودة بمعالج ذكاء اصطناعي لتصفية الضوضاء وضمان نقاء الصوت.",
       descEn: "State-of-the-art digital medical hearing aid with Bluetooth connectivity and AI noise cancellation.",
-      sku: "AFP-AUD-303",
+      sku: "AFP-AUD-505",
       price: 450,
       stockQuantity: 5,
       isAvailable: true,
       isFeatured: true,
       categoryId: catAudiology.id,
       brandId: brandPhonak.id,
-      specsAr: JSON.stringify({ "التقنية": "بلوتوث + ذكاء اصطناعي", "البطارية": "قابلة للشحن", "النوع": "مخفية خلف الأذن RIC" }),
-      specsEn: JSON.stringify({ "Technology": "Bluetooth + AI Processing", "Battery": "Rechargeable Li-Ion", "Type": "Receiver-in-Canal (RIC)" }),
+      specsAr: JSON.stringify({ "النوع": "سماعة طبية", "التقنية": "بلوتوث + ذكاء اصطناعي", "البطارية": "قابلة للشحن" }),
+      specsEn: JSON.stringify({ "Type": "Medical Hearing Aid", "Technology": "Bluetooth + AI", "Battery": "Rechargeable" }),
       images: {
         create: [
           {
             url: "/brand/logo-primary.png",
             altAr: "سماعة فوناك الطبية الرقمية المخفية",
-            altEn: "Phonak Audéo Lumity Digital Hearing Aid",
             isPrimary: true,
           },
         ],
@@ -277,57 +298,7 @@ async function main() {
     },
   });
 
-  await prisma.product.upsert({
-    where: { slug: "zeiss-blueguard-optical-lenses" },
-    update: {},
-    create: {
-      slug: "zeiss-blueguard-optical-lenses",
-      nameAr: "عدسات زايس الطبية المانعة للضوء الأزرق (ZEISS BlueGuard)",
-      nameEn: "ZEISS BlueGuard Prescription Lenses",
-      descAr: "عدسات طبية ألمانية فائقة النقاء تحمي العين من إجهاد الشاشات والهواتف، وتوفر رؤية واضحة جداً بدون انعكاسات مزعجة.",
-      descEn: "German engineered optical lenses protecting against blue light strain with hydrophobic anti-reflective coating.",
-      sku: "AFP-LEN-404",
-      price: 85,
-      stockQuantity: 25,
-      isAvailable: true,
-      isFeatured: false,
-      categoryId: catLenses.id,
-      brandId: brandZeiss.id,
-      specsAr: JSON.stringify({ "الطلاء": "BlueGuard + Duravision Chrome", "الحماية": "100% UV & Blue Light", "بلد المنشأ": "ألمانيا" }),
-      specsEn: JSON.stringify({ "Coating": "BlueGuard + Duravision", "Protection": "100% UV & Blue Light", "Origin": "Germany" }),
-      images: {
-        create: [
-          {
-            url: "/brand/logo-primary.png",
-            altAr: "عدسات زايس الطبية المانعة للضوء الأزرق",
-            altEn: "ZEISS BlueGuard Prescription Lenses",
-            isPrimary: true,
-          },
-        ],
-      },
-    },
-  });
-
-  // Seed Business Settings
-  const defaultSettings = [
-    { key: "phone_primary", valueAr: "773945678", valueEn: "773945678", category: "CONTACT" },
-    { key: "phone_secondary", valueAr: "777266692", valueEn: "777266692", category: "CONTACT" },
-    { key: "whatsapp_number", valueAr: "773945678", valueEn: "773945678", category: "CONTACT" },
-    { key: "address", valueAr: "صنعاء - منطقة سعوان - الخط العام أمام المستشفى", valueEn: "Sana'a - Sa'awan Area - Main Street opposite the Hospital", category: "LOCATION" },
-    { key: "working_hours_weekdays", valueAr: "السبت - الخميس: 9:00 صباحاً - 9:30 مساءً", valueEn: "Sat - Thu: 9:00 AM - 9:30 PM", category: "HOURS" },
-    { key: "working_hours_friday", valueAr: "الجمعة: 4:00 عصراً - 9:30 مساءً", valueEn: "Fri: 4:00 PM - 9:30 PM", category: "HOURS" },
-    { key: "slogan", valueAr: "أناقة وإبداع .. رؤية بلا صداع", valueEn: "Elegance & Creativity .. Vision without Headache", category: "BRAND" },
-  ];
-
-  for (const setting of defaultSettings) {
-    await prisma.businessSetting.upsert({
-      where: { key: setting.key },
-      update: {},
-      create: setting,
-    });
-  }
-
-  console.log("Database seeded successfully!");
+  console.log("Database seeded successfully with all eyewear categories!");
 }
 
 main()

@@ -9,15 +9,22 @@ import { getProductBySlug } from "@/lib/data";
 import { getProductWhatsAppLink } from "@/lib/whatsapp";
 import { MessageCircle, ShieldCheck, Tag, CheckCircle2, ArrowRight } from "lucide-react";
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const product = await getProductBySlug(slug);
-  if (!product) return { title: "المنتج غير موجود" };
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-  return {
-    title: product.nameAr,
-    description: product.descAr,
-  };
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  try {
+    const { slug } = await params;
+    const product = await getProductBySlug(slug);
+    if (!product) return { title: "المنتج غير موجود" };
+
+    return {
+      title: `${product.nameAr} | نظارات الفرنسي بلس`,
+      description: product.descAr,
+    };
+  } catch {
+    return { title: "تفاصيل المنتج | نظارات الفرنسي بلس" };
+  }
 }
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
