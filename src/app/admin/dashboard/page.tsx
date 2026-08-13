@@ -16,6 +16,7 @@ import {
   PlusCircle,
   Eye,
   CheckCircle,
+  KeyRound,
 } from "lucide-react";
 
 export const revalidate = 0;
@@ -83,6 +84,13 @@ export default async function AdminDashboardPage() {
             >
               <PlusCircle className="w-4 h-4" />
               <span>إضافة منتج جديد</span>
+            </Link>
+            <Link
+              href="/admin/settings"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-extrabold bg-[#087E8B] hover:bg-[#066570] text-white border border-[#087E8B]/60 shadow-lg transition-all"
+            >
+              <KeyRound className="w-4 h-4 text-[#F4C400]" />
+              <span>الحساب والأمان</span>
             </Link>
             <Link
               href="/admin/appointments"

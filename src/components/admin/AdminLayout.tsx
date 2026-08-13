@@ -15,11 +15,12 @@ import {
   CheckCircle,
   Menu,
   X,
+  KeyRound,
 } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
-  activeTab: "dashboard" | "appointments" | "products" | "inquiries";
+  activeTab: "dashboard" | "appointments" | "products" | "inquiries" | "settings";
   username: string;
   counts?: {
     appointments?: number;
@@ -67,6 +68,13 @@ export default function AdminLayout({
       icon: MessageCircle,
       badge: counts.inquiries ? counts.inquiries : null,
       badgeColor: "bg-[#25D366] text-white",
+    },
+    {
+      id: "settings",
+      label: "إعدادات الحساب والأمان",
+      href: "/admin/settings",
+      icon: KeyRound,
+      badge: null,
     },
   ];
 

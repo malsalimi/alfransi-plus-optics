@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { prisma } from "./prisma";
 import bcrypt from "bcryptjs";
-import { setAdminSession, clearAdminSession } from "./auth";
+import { setAdminSession, getAdminSession, clearAdminSession } from "./auth";
 import { revalidatePath } from "next/cache";
 
 // Appointment Validation Schema
@@ -284,5 +284,72 @@ export async function updateProductAction(prevState: any, formData: FormData) {
   } catch (error: any) {
     console.error("Update product error:", error);
     return { success: false, message: error?.message || "حدث خطأ أثناء التحديث" };
+  }
+}
+
+// Admin Update Account Username & Password Action
+export async function updateAdminSecurityAction(prevState: any, formData: FormData) {
+  try {
+    const session = await getAdminSession();
+    if (!session) {
+      return { success: false, message: "جلسة العمل منتهية، يرجى إعادة تسجيل الدخول" };
+    }
+
+    const currentPassword = formData.get("currentPassword") as string;
+    const newUsername = formData.get("newUsername") as string;
+    const newPassword = formData.get("newPassword") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
+    const name = formData.get("name") as string;
+
+    if (!currentPassword) {
+      return { success: false, message: "يرجى إدخال كلمة المرور الحالية لتأكيد الهوية" };
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.userId },
+    });
+
+    if (!user) {
+      return { success: false, message: "لم يتم العثور على حساب المستخدم" };
+    }
+
+    const isValidPassword = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!isValidPassword) {
+      return { success: false, message: "كلمة المرور الحالية غير صحيحة" };
+    }
+
+    if (newPassword) {
+      if (newPassword.length < 6) {
+        return { success: false, message: "يجب أن لا تقل كلمة المرور الجديدة عن 6 خانات" };
+      }
+      if (newPassword !== confirmPassword) {
+        return { success: false, message: "كلمتا المرور الجديدة والتأكيد غير متطابقتين" };
+      }
+    }
+
+    const updatedData: any = {};
+    if (name && name.trim()) updatedData.name = name.trim();
+    if (newUsername && newUsername.trim()) updatedData.username = newUsername.trim();
+    if (newPassword) {
+      updatedData.passwordHash = await bcrypt.hash(newPassword, 10);
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: user.id },
+      data: updatedData,
+    });
+
+    // Update active JWT session with new username
+    await setAdminSession({
+      userId: updatedUser.id,
+      username: updatedUser.username,
+      role: updatedUser.role,
+    });
+
+    revalidatePath("/admin");
+    return { success: true, message: "تم تحديث بيانات حساب الأدمن وكلمة المرور بنجاح!" };
+  } catch (error: any) {
+    console.error("Update admin security error:", error);
+    return { success: false, message: error?.message || "حدث خطأ أثناء تحديث بيانات الحساب" };
   }
 }
