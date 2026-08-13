@@ -64,9 +64,9 @@ async function main() {
     update: {},
     create: {
       slug: "fashion-glasses",
-      nameAr: "نظارات هنجمة واستعراض",
+      nameAr: "نظارات كشخة واستعراض",
       nameEn: "Fashion & Lifestyle Glasses",
-      descriptionAr: "نظارات عصرية وكاجوال مخصصة للهنجمة والأناقة اليومية بأحدث صيحات الموضة.",
+      descriptionAr: "نظارات عصرية وكاجوال مخصصة للكشخة والأناقة اليومية بأحدث صيحات الموضة.",
       descriptionEn: "Stylish lifestyle and trend-setting fashion eyewear.",
       icon: "Sparkles",
     },
@@ -243,9 +243,9 @@ async function main() {
     update: {},
     create: {
       slug: "fashion-trend-lifestyle-sunglasses",
-      nameAr: "نظارة كاجوال عصرية للهنجمة والاستعراض",
+      nameAr: "نظارة كاجوال عصرية للكشخة والاستعراض",
       nameEn: "Fashion & Trend Lifestyle Eyewear",
-      descAr: "نظارات عصرية جذابة بتصميم مودرن للهنجمة والأناقة في المناسبات والخروجات مع حماية شمسية ممتازة.",
+      descAr: "نظارات عصرية جذابة بتصميم مودرن للكشخة والأناقة في المناسبات والخروجات مع حماية شمسية ممتازة.",
       descEn: "Stylish fashion statement eyewear designed for casual wear, trend-setting look and daily style.",
       sku: "AFP-FAS-404",
       price: 55,
@@ -254,13 +254,13 @@ async function main() {
       isFeatured: true,
       categoryId: catFashion.id,
       brandId: brandRayBan.id,
-      specsAr: JSON.stringify({ "النوع": "استعراض وهنجمة", "التصميم": "مودرن تريند", "الجنس": "للشباب والجنسين" }),
+      specsAr: JSON.stringify({ "النوع": "استعراض وكشخة", "التصميم": "مودرن تريند", "الجنس": "للشباب والجنسين" }),
       specsEn: JSON.stringify({ "Type": "Fashion / Lifestyle", "Design": "Modern Trend", "Gender": "Unisex" }),
       images: {
         create: [
           {
             url: "/brand/logo-primary.png",
-            altAr: "نظارة كاجوال عصرية للهنجمة والاستعراض",
+            altAr: "نظارة كاجوال عصرية للكشخة والاستعراض",
             isPrimary: true,
           },
         ],
