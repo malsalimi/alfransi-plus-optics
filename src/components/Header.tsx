@@ -31,8 +31,7 @@ export default function Header() {
     { href: "/products", label: dict.nav.products },
     { href: "/brands", label: dict.nav.brands },
     { href: "/appointments", label: dict.nav.appointments },
-    { href: "/contact", label: dict.nav.contact },
-    { href: "/location", label: dict.nav.location },
+    { href: "/location", label: isArabic ? "الموقع والتواصل" : "Location & Contact" },
   ];
 
   return (

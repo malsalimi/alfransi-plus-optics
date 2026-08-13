@@ -16,16 +16,18 @@ import {
   Menu,
   X,
   KeyRound,
+  Tag,
 } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
-  activeTab: "dashboard" | "appointments" | "products" | "inquiries" | "settings";
+  activeTab: "dashboard" | "appointments" | "products" | "inquiries" | "brands" | "settings";
   username: string;
   counts?: {
     appointments?: number;
     products?: number;
     inquiries?: number;
+    brands?: number;
   };
 }
 
@@ -60,6 +62,14 @@ export default function AdminLayout({
       icon: Glasses,
       badge: counts.products ? counts.products : null,
       badgeColor: "bg-[#087E8B] text-white",
+    },
+    {
+      id: "brands",
+      label: "الماركات العالمية",
+      href: "/admin/brands",
+      icon: Tag,
+      badge: counts.brands ? counts.brands : null,
+      badgeColor: "bg-[#16C7D9] text-[#071A2B]",
     },
     {
       id: "inquiries",

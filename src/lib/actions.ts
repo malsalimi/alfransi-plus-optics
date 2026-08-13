@@ -169,6 +169,17 @@ export async function deleteProductAction(id: string) {
   }
 }
 
+// Helper function to process image file upload (Base64) or fallback URL string
+async function processImageFileOrUrl(imageFile: File | null, textUrl: string | null): Promise<string | null> {
+  if (imageFile && imageFile.size > 0 && imageFile.name) {
+    const bytes = await imageFile.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const mimeType = imageFile.type || "image/png";
+    return `data:${mimeType};base64,${buffer.toString("base64")}`;
+  }
+  return textUrl || null;
+}
+
 // Admin Create Product Action
 export async function createProductAction(prevState: any, formData: FormData) {
   try {
@@ -180,11 +191,14 @@ export async function createProductAction(prevState: any, formData: FormData) {
     const priceStr = formData.get("price") as string;
     const sku = formData.get("sku") as string;
     const stockQuantityStr = formData.get("stockQuantity") as string;
-    const imageUrl = (formData.get("imageUrl") as string) || "/brand/logo-marketing.png";
+    const imageFile = formData.get("imageFile") as File | null;
+    const textUrl = formData.get("imageUrl") as string | null;
 
     if (!nameAr || !categoryId || !descAr) {
       return { success: false, message: "يرجى تعبئة اسم المنتج والتصنيف والوصف" };
     }
+
+    const imageUrl = (await processImageFileOrUrl(imageFile, textUrl)) || "/products/eyeglasses-titanium.png";
 
     const slug = nameAr
       .toLowerCase()
@@ -237,11 +251,14 @@ export async function updateProductAction(prevState: any, formData: FormData) {
     const priceStr = formData.get("price") as string;
     const sku = formData.get("sku") as string;
     const stockQuantityStr = formData.get("stockQuantity") as string;
-    const imageUrl = formData.get("imageUrl") as string;
+    const imageFile = formData.get("imageFile") as File | null;
+    const textUrl = formData.get("imageUrl") as string | null;
 
     if (!id || !nameAr || !categoryId || !descAr) {
       return { success: false, message: "يرجى تعبئة الحقول الأساسية" };
     }
+
+    const imageUrl = await processImageFileOrUrl(imageFile, textUrl);
 
     await prisma.product.update({
       where: { id },
@@ -284,6 +301,100 @@ export async function updateProductAction(prevState: any, formData: FormData) {
   } catch (error: any) {
     console.error("Update product error:", error);
     return { success: false, message: error?.message || "حدث خطأ أثناء التحديث" };
+  }
+}
+
+// Admin Create Brand Action
+export async function createBrandAction(prevState: any, formData: FormData) {
+  try {
+    const nameAr = formData.get("nameAr") as string;
+    const nameEn = formData.get("nameEn") as string;
+    const descriptionAr = formData.get("descriptionAr") as string;
+    const descriptionEn = formData.get("descriptionEn") as string;
+    const imageFile = formData.get("imageFile") as File | null;
+    const textUrl = formData.get("logoUrl") as string | null;
+
+    if (!nameAr) {
+      return { success: false, message: "اسم الماركة بالعربية مطلوب" };
+    }
+
+    const logoUrl = (await processImageFileOrUrl(imageFile, textUrl)) || "/brand/logo-mark.png";
+    const slug = nameAr
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/[\s_-]+/g, "-") + "-" + Date.now().toString().slice(-4);
+
+    await prisma.brand.create({
+      data: {
+        slug: slug || `brand-${Date.now()}`,
+        nameAr,
+        nameEn: nameEn || nameAr,
+        logoUrl,
+        descriptionAr,
+        descriptionEn,
+      },
+    });
+
+    revalidatePath("/brands");
+    revalidatePath("/admin/brands");
+    return { success: true, message: "تمت إضافة الماركة بنجاح" };
+  } catch (error: any) {
+    console.error("Create brand error:", error);
+    return { success: false, message: error?.message || "حدث خطأ أثناء إضافة الماركة" };
+  }
+}
+
+// Admin Update Brand Action
+export async function updateBrandAction(prevState: any, formData: FormData) {
+  try {
+    const id = formData.get("id") as string;
+    const nameAr = formData.get("nameAr") as string;
+    const nameEn = formData.get("nameEn") as string;
+    const descriptionAr = formData.get("descriptionAr") as string;
+    const descriptionEn = formData.get("descriptionEn") as string;
+    const imageFile = formData.get("imageFile") as File | null;
+    const textUrl = formData.get("logoUrl") as string | null;
+
+    if (!id || !nameAr) {
+      return { success: false, message: "بيانات الماركة غير مكتملة" };
+    }
+
+    const logoUrl = await processImageFileOrUrl(imageFile, textUrl);
+
+    const updateData: any = {
+      nameAr,
+      nameEn: nameEn || nameAr,
+      descriptionAr,
+      descriptionEn,
+    };
+    if (logoUrl) updateData.logoUrl = logoUrl;
+
+    await prisma.brand.update({
+      where: { id },
+      data: updateData,
+    });
+
+    revalidatePath("/brands");
+    revalidatePath("/admin/brands");
+    return { success: true, message: "تم تحديث بيانات الماركة بنجاح" };
+  } catch (error: any) {
+    console.error("Update brand error:", error);
+    return { success: false, message: error?.message || "حدث خطأ أثناء تحديث الماركة" };
+  }
+}
+
+// Admin Delete Brand Action
+export async function deleteBrandAction(id: string) {
+  try {
+    await prisma.brand.delete({
+      where: { id },
+    });
+    revalidatePath("/brands");
+    revalidatePath("/admin/brands");
+    return { success: true };
+  } catch (error) {
+    return { success: false };
   }
 }
 

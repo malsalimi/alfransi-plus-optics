@@ -135,14 +135,28 @@ export default function AddProductModal({ categories }: { categories: CategoryOp
                 </div>
               </div>
 
-              <div>
-                <label className="block text-slate-300 font-bold mb-1.5">رابط صورة المنتج (Image URL)</label>
-                <input
-                  type="text"
-                  name="imageUrl"
-                  placeholder="/brand/logo-marketing.png"
-                  className="w-full bg-[#040D16] border border-white/10 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:border-[#16C7D9] outline-none font-mono text-xs"
-                />
+              <div className="space-y-3 bg-[#040D16] p-3.5 rounded-2xl border border-white/10">
+                <label className="block text-[#16C7D9] font-bold">صورة المنتج (رفع ملف أو استخدام رابط)</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <span className="block text-[11px] text-slate-400 mb-1">اختيار ملف صورة من الجهاز:</span>
+                    <input
+                      type="file"
+                      name="imageFile"
+                      accept="image/*"
+                      className="w-full bg-[#071A2B] border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#087E8B] file:text-white hover:file:bg-[#066570]"
+                    />
+                  </div>
+                  <div>
+                    <span className="block text-[11px] text-slate-400 mb-1">أو كتابة رابط صورة:</span>
+                    <input
+                      type="text"
+                      name="imageUrl"
+                      placeholder="/products/eyeglasses-titanium.png"
+                      className="w-full bg-[#071A2B] border border-white/10 rounded-xl px-3 py-2 text-white placeholder-slate-500 outline-none font-mono text-xs"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div>

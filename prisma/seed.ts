@@ -98,14 +98,15 @@ async function main() {
     },
   });
 
-  // Seed Brands
+  // Seed Brands with Authentic Photography
   const brandRayBan = await prisma.brand.upsert({
     where: { slug: "ray-ban" },
-    update: {},
+    update: { logoUrl: "/brands/rayban-logo.png" },
     create: {
       slug: "ray-ban",
       nameAr: "ريبان (Ray-Ban)",
       nameEn: "Ray-Ban",
+      logoUrl: "/brands/rayban-logo.png",
       descriptionAr: "العلامة الرائدة عالمياً في النظارات الشمسية والطبية الإيطالية.",
       descriptionEn: "World famous iconic Italian eyewear brand.",
     },
@@ -113,11 +114,12 @@ async function main() {
 
   const brandOakley = await prisma.brand.upsert({
     where: { slug: "oakley" },
-    update: {},
+    update: { logoUrl: "/brands/oakley-logo.png" },
     create: {
       slug: "oakley",
       nameAr: "أوكلي (Oakley)",
       nameEn: "Oakley",
+      logoUrl: "/brands/oakley-logo.png",
       descriptionAr: "نظارات رياضية وبصرية عالية التكنولوجيا ومقاومة للصدمات.",
       descriptionEn: "High-performance sports and optical frames.",
     },
@@ -125,11 +127,12 @@ async function main() {
 
   const brandZeiss = await prisma.brand.upsert({
     where: { slug: "zeiss" },
-    update: {},
+    update: { logoUrl: "/brands/zeiss-logo.png" },
     create: {
       slug: "zeiss",
       nameAr: "زايس (ZEISS)",
       nameEn: "ZEISS",
+      logoUrl: "/brands/zeiss-logo.png",
       descriptionAr: "الرواد الألمان في صناعة العدسات البصرية الأكثر دقة ونقاءً.",
       descriptionEn: "German precision optics and anti-reflective lens coatings.",
     },
@@ -137,11 +140,12 @@ async function main() {
 
   const brandPhonak = await prisma.brand.upsert({
     where: { slug: "phonak" },
-    update: {},
+    update: { logoUrl: "/brands/phonak-logo.png" },
     create: {
       slug: "phonak",
       nameAr: "فوناك (Phonak)",
       nameEn: "Phonak Audiology",
+      logoUrl: "/brands/phonak-logo.png",
       descriptionAr: "التقنية السويسرية الأولى في الأجهزة والسماعات الطبية للسمع.",
       descriptionEn: "Swiss leader in medical hearing instruments and audiology.",
     },
