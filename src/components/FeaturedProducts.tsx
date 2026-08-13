@@ -34,7 +34,7 @@ export default function FeaturedProducts({
       categorySlug: "eyeglasses",
       categoryName: isArabic ? "نظارات طبية" : "Eyeglasses",
       brandName: "Ray-Ban",
-      imageUrl: "/brand/logo-primary.png",
+      imageUrl: "/products/eyeglasses-titanium.png",
     },
     {
       id: "2",
@@ -49,7 +49,7 @@ export default function FeaturedProducts({
       categorySlug: "sunglasses",
       categoryName: isArabic ? "نظارات شمسية" : "Sunglasses",
       brandName: "Ray-Ban",
-      imageUrl: "/brand/logo-primary.png",
+      imageUrl: "/products/sunglasses-rayban.png",
     },
     {
       id: "3",
@@ -64,7 +64,7 @@ export default function FeaturedProducts({
       categorySlug: "protection-glasses",
       categoryName: isArabic ? "نظارات حماية (بلوكت)" : "Protection Glasses",
       brandName: "ZEISS",
-      imageUrl: "/brand/logo-primary.png",
+      imageUrl: "/products/screen-bluecut.png",
     },
     {
       id: "4",
@@ -79,7 +79,7 @@ export default function FeaturedProducts({
       categorySlug: "fashion-glasses",
       categoryName: isArabic ? "نظارات كشخة واستعراض" : "Fashion Eyewear",
       brandName: "Ray-Ban",
-      imageUrl: "/brand/logo-primary.png",
+      imageUrl: "/products/fashion-cashkha.png",
     },
     {
       id: "5",
@@ -94,7 +94,7 @@ export default function FeaturedProducts({
       categorySlug: "audiology-aids",
       categoryName: isArabic ? "سمعيات" : "Audiology",
       brandName: "Phonak",
-      imageUrl: "/brand/logo-primary.png",
+      imageUrl: "/products/phonak-hearing-aid.png",
     },
   ];
 

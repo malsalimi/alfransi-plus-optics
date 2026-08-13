@@ -224,3 +224,65 @@ export async function createProductAction(prevState: any, formData: FormData) {
     return { success: false, message: error?.message || "حدث خطأ أثناء إضافة المنتج" };
   }
 }
+
+// Admin Update Product Action
+export async function updateProductAction(prevState: any, formData: FormData) {
+  try {
+    const id = formData.get("id") as string;
+    const nameAr = formData.get("nameAr") as string;
+    const nameEn = formData.get("nameEn") as string;
+    const categoryId = formData.get("categoryId") as string;
+    const descAr = formData.get("descAr") as string;
+    const descEn = (formData.get("descEn") as string) || descAr;
+    const priceStr = formData.get("price") as string;
+    const sku = formData.get("sku") as string;
+    const stockQuantityStr = formData.get("stockQuantity") as string;
+    const imageUrl = formData.get("imageUrl") as string;
+
+    if (!id || !nameAr || !categoryId || !descAr) {
+      return { success: false, message: "يرجى تعبئة الحقول الأساسية" };
+    }
+
+    await prisma.product.update({
+      where: { id },
+      data: {
+        nameAr,
+        nameEn: nameEn || nameAr,
+        categoryId,
+        descAr,
+        descEn,
+        sku: sku || null,
+        price: priceStr ? parseFloat(priceStr) : null,
+        stockQuantity: stockQuantityStr ? parseInt(stockQuantityStr, 10) : 10,
+      },
+    });
+
+    if (imageUrl) {
+      const existingImage = await prisma.productImage.findFirst({
+        where: { productId: id, isPrimary: true },
+      });
+
+      if (existingImage) {
+        await prisma.productImage.update({
+          where: { id: existingImage.id },
+          data: { url: imageUrl },
+        });
+      } else {
+        await prisma.productImage.create({
+          data: {
+            productId: id,
+            url: imageUrl,
+            isPrimary: true,
+          },
+        });
+      }
+    }
+
+    revalidatePath("/products");
+    revalidatePath("/admin/products");
+    return { success: true, message: "تم تحديث التعديلات بنجاح" };
+  } catch (error: any) {
+    console.error("Update product error:", error);
+    return { success: false, message: error?.message || "حدث خطأ أثناء التحديث" };
+  }
+}

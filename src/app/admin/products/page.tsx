@@ -4,6 +4,7 @@ import { getAdminSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import AdminLayout from "@/components/admin/AdminLayout";
 import AddProductModal from "@/components/admin/AddProductModal";
+import EditProductModal from "@/components/admin/EditProductModal";
 import { deleteProductAction } from "@/lib/actions";
 import { Glasses, Trash2, Tag, CheckCircle2, XCircle } from "lucide-react";
 
@@ -113,20 +114,24 @@ export default async function AdminProductsPage() {
                       </td>
 
                       <td className="p-4 text-center">
-                        <form
-                          action={async () => {
-                            "use server";
-                            await deleteProductAction(item.id);
-                          }}
-                        >
-                          <button
-                            type="submit"
-                            className="p-2 rounded-xl bg-red-500/15 hover:bg-red-500 text-red-300 hover:text-white border border-red-500/30 transition-all"
-                            title="حذف المنتج من الكتالوج"
+                        <div className="flex items-center justify-center gap-2">
+                          <EditProductModal product={item} categories={categories} />
+
+                          <form
+                            action={async () => {
+                              "use server";
+                              await deleteProductAction(item.id);
+                            }}
                           >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </form>
+                            <button
+                              type="submit"
+                              className="p-2 rounded-xl bg-red-500/15 hover:bg-red-500 text-red-300 hover:text-white border border-red-500/30 transition-all"
+                              title="حذف المنتج من الكتالوج"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </form>
+                        </div>
                       </td>
                     </tr>
                   ))}

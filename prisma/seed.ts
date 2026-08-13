@@ -147,10 +147,30 @@ async function main() {
     },
   });
 
-  // Seed Sample Products across categories
+  // Clean up old product slugs if existing
+  await prisma.product.deleteMany({
+    where: {
+      slug: {
+        in: ["bluecut-[#087E8B]-protection-frame"],
+      },
+    },
+  });
+
+  // Seed Products with Real Photography
   await prisma.product.upsert({
     where: { slug: "al-fransi-titanium-optics-01" },
-    update: {},
+    update: {
+      images: {
+        deleteMany: {},
+        create: [
+          {
+            url: "/products/eyeglasses-titanium.png",
+            altAr: "نظارة الفرنسي تيتانيوم الترا فليكس الطبية",
+            isPrimary: true,
+          },
+        ],
+      },
+    },
     create: {
       slug: "al-fransi-titanium-optics-01",
       nameAr: "نظارة الفرنسي تيتانيوم الترا فليكس الطبية",
@@ -169,7 +189,7 @@ async function main() {
       images: {
         create: [
           {
-            url: "/brand/logo-primary.png",
+            url: "/products/eyeglasses-titanium.png",
             altAr: "نظارة الفرنسي تيتانيوم الترا فليكس الطبية",
             isPrimary: true,
           },
@@ -180,7 +200,18 @@ async function main() {
 
   await prisma.product.upsert({
     where: { slug: "rayban-wayfarer-classic-gold" },
-    update: {},
+    update: {
+      images: {
+        deleteMany: {},
+        create: [
+          {
+            url: "/products/sunglasses-rayban.png",
+            altAr: "نظارة ريبان شمسية كلاسيك",
+            isPrimary: true,
+          },
+        ],
+      },
+    },
     create: {
       slug: "rayban-wayfarer-classic-gold",
       nameAr: "نظارة ريبان شمسية كلاسيك - إطار ذهبي",
@@ -199,7 +230,7 @@ async function main() {
       images: {
         create: [
           {
-            url: "/brand/logo-primary.png",
+            url: "/products/sunglasses-rayban.png",
             altAr: "نظارة ريبان شمسية كلاسيك",
             isPrimary: true,
           },
@@ -209,10 +240,21 @@ async function main() {
   });
 
   await prisma.product.upsert({
-    where: { slug: "bluecut-[#087E8B]-protection-frame" },
-    update: {},
+    where: { slug: "bluecut-screen-protection-frame" },
+    update: {
+      images: {
+        deleteMany: {},
+        create: [
+          {
+            url: "/products/screen-bluecut.png",
+            altAr: "نظارة حماية الشاشات والكمبيوتر Blue-Cut",
+            isPrimary: true,
+          },
+        ],
+      },
+    },
     create: {
-      slug: "bluecut-[#087E8B]-protection-frame",
+      slug: "bluecut-screen-protection-frame",
       nameAr: "نظارة حماية الشاشات والكمبيوتر (Blue-Cut)",
       nameEn: "Blue-Cut Digital Protection Glasses",
       descAr: "نظارة حماية مخصصة لحجب الضوء الأزرق الضار الصادر من الشاشات والهواتف، تمنع إجهاد العين والصداع أثناء العمل والمكتب.",
@@ -229,7 +271,7 @@ async function main() {
       images: {
         create: [
           {
-            url: "/brand/logo-primary.png",
+            url: "/products/screen-bluecut.png",
             altAr: "نظارة حماية الشاشات والكمبيوتر Blue-Cut",
             isPrimary: true,
           },
@@ -240,7 +282,18 @@ async function main() {
 
   await prisma.product.upsert({
     where: { slug: "fashion-trend-lifestyle-sunglasses" },
-    update: {},
+    update: {
+      images: {
+        deleteMany: {},
+        create: [
+          {
+            url: "/products/fashion-cashkha.png",
+            altAr: "نظارة كاجوال عصرية للكشخة والاستعراض",
+            isPrimary: true,
+          },
+        ],
+      },
+    },
     create: {
       slug: "fashion-trend-lifestyle-sunglasses",
       nameAr: "نظارة كاجوال عصرية للكشخة والاستعراض",
@@ -259,7 +312,7 @@ async function main() {
       images: {
         create: [
           {
-            url: "/brand/logo-primary.png",
+            url: "/products/fashion-cashkha.png",
             altAr: "نظارة كاجوال عصرية للكشخة والاستعراض",
             isPrimary: true,
           },
@@ -270,7 +323,18 @@ async function main() {
 
   await prisma.product.upsert({
     where: { slug: "phonak-audeo-lumity-digital" },
-    update: {},
+    update: {
+      images: {
+        deleteMany: {},
+        create: [
+          {
+            url: "/products/phonak-hearing-aid.png",
+            altAr: "سماعة فوناك الطبية الرقمية المخفية",
+            isPrimary: true,
+          },
+        ],
+      },
+    },
     create: {
       slug: "phonak-audeo-lumity-digital",
       nameAr: "سماعة فوناك الطبية الرقمية المخفية (Phonak Audéo)",
@@ -289,7 +353,7 @@ async function main() {
       images: {
         create: [
           {
-            url: "/brand/logo-primary.png",
+            url: "/products/phonak-hearing-aid.png",
             altAr: "سماعة فوناك الطبية الرقمية المخفية",
             isPrimary: true,
           },
@@ -298,7 +362,26 @@ async function main() {
     },
   });
 
-  console.log("Database seeded successfully with all eyewear categories!");
+  // Seed Business Settings
+  const defaultSettings = [
+    { key: "phone_primary", valueAr: "773945678", valueEn: "773945678", category: "CONTACT" },
+    { key: "phone_secondary", valueAr: "777266692", valueEn: "777266692", category: "CONTACT" },
+    { key: "whatsapp_number", valueAr: "773945678", valueEn: "773945678", category: "CONTACT" },
+    { key: "address", valueAr: "صنعاء - منطقة سعوان - أمام نايس وير جوار شركة الأثير موبايل", valueEn: "Sana'a - Sa'awan Area - In front of Nice Wear, next to Al-Atheer Mobile", category: "LOCATION" },
+    { key: "working_hours_weekdays", valueAr: "السبت - الخميس: 9:00 صباحاً - 9:30 مساءً", valueEn: "Sat - Thu: 9:00 AM - 9:30 PM", category: "HOURS" },
+    { key: "working_hours_friday", valueAr: "الجمعة: 4:00 عصراً - 9:30 مساءً", valueEn: "Fri: 4:00 PM - 9:30 PM", category: "HOURS" },
+    { key: "slogan", valueAr: "أناقة وإبداع .. رؤية بلا صداع", valueEn: "Elegance & Creativity .. Vision without Headache", category: "BRAND" },
+  ];
+
+  for (const setting of defaultSettings) {
+    await prisma.businessSetting.upsert({
+      where: { key: setting.key },
+      update: {},
+      create: setting,
+    });
+  }
+
+  console.log("Database seeded successfully with real product photography!");
 }
 
 main()

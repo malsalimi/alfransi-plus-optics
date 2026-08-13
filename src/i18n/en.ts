@@ -7,7 +7,7 @@ export const en = {
     phonePrimary: "+967 773945678",
     phoneSecondary: "+967 777266692",
     city: "Sana'a",
-    address: "Sana'a - Sa'awan - Opposite the Hospital",
+    address: "Sana'a - Sa'awan Area - In front of Nice Wear, next to Al-Atheer Mobile",
   },
   nav: {
     home: "Home",
@@ -146,7 +146,7 @@ export const en = {
   location: {
     pageTitle: "Location & Directions",
     pageSubtitle: "Visit our store in Sana'a - Sa'awan for specialized testing and eyewear fitting",
-    landmark: "Location: Sana'a - Sa'awan Area - Main Street opposite the Hospital",
+    landmark: "Location: Sana'a - Sa'awan Area - In front of Nice Wear, next to Al-Atheer Mobile",
     callBranch: "Call Store Branch",
   },
   admin: {
@@ -194,6 +194,10 @@ export const en = {
       {
         q: "Do you offer hearing aids and audiology evaluations?",
         a: "Yes, we have a dedicated audiology department offering diagnostic evaluations and modern hearing aid devices.",
+      },
+      {
+        q: "Do you offer delivery service?",
+        a: "Yes, we provide direct delivery service for all optical products, prescription glasses, contact lenses, and hearing aids inside Sana'a as well as all remaining Yemeni governorates via WhatsApp coordination.",
       },
       {
         q: "What are the store opening hours?",
