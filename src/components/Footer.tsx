@@ -162,7 +162,7 @@ export default function Footer() {
             </Link>
             <span>•</span>
             <a
-              href="https://salimi-tech.vercel.app/"
+              href="https://heybasoft.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-slate-300 hover:text-[#F4C400] font-bold transition-all px-2 py-0.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10"
