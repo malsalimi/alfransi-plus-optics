@@ -168,7 +168,7 @@ export default function Footer() {
               className="inline-flex items-center gap-1.5 text-slate-300 hover:text-[#F4C400] font-bold transition-all px-2 py-0.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10"
             >
               <span>تصميم وتطوير</span>
-              <span className="text-[#F4C400] font-black dir-ltr">Salimi-tech</span>
+              <span className="text-[#F4C400] font-black">شركة هيبة سوفت</span>
             </a>
           </div>
         </div>
