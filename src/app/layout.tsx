@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Tajawal, Inter } from "next/font/google";
 import "./globals.css";
 import { LocaleProvider } from "@/context/LocaleContext";
+import SplashScreen from "@/components/SplashScreen";
 
 const tajawal = Tajawal({
   subsets: ["arabic", "latin"],
@@ -78,7 +79,10 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" className={`${tajawal.variable} ${inter.variable} h-full antialiased`}>
       <body className="min-h-screen flex flex-col bg-[#F7FAFC] text-slate-800 antialiased selection:bg-[#F4C400] selection:text-[#071A2B]">
-        <LocaleProvider>{children}</LocaleProvider>
+        <LocaleProvider>
+          <SplashScreen />
+          {children}
+        </LocaleProvider>
       </body>
     </html>
   );
