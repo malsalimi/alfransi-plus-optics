@@ -52,8 +52,8 @@ export default function SplashScreen() {
       }`}
     >
       {/* Background Decorative Ambient Glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] bg-[#F4C400]/15 rounded-full blur-[100px] pointer-events-none animate-pulse" />
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] bg-[#009688]/15 rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] sm:w-[550px] sm:h-[550px] bg-[#F4C400]/20 rounded-full blur-[120px] pointer-events-none animate-pulse" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] bg-[#009688]/20 rounded-full blur-[90px] pointer-events-none" />
 
       {/* Skip Button */}
       <button
@@ -64,40 +64,34 @@ export default function SplashScreen() {
         <X className="w-4 h-4 text-[#F4C400] group-hover:rotate-90 transition-transform" />
       </button>
 
-      {/* Main Floating Logo Container */}
-      <div className="relative flex flex-col items-center justify-center p-8 max-w-md mx-4 text-center z-10 animate-fade-in">
-        {/* Floating Outer Ring */}
-        <div className="relative mb-6 group">
-          <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-[#F4C400]/30 via-[#009688]/30 to-[#F4C400]/30 blur-xl opacity-75 group-hover:opacity-100 transition duration-1000 animate-tilt"></div>
-          
-          <div className="relative p-6 sm:p-8 rounded-3xl bg-[#0B253C]/80 border border-white/15 shadow-2xl backdrop-blur-2xl flex items-center justify-center ring-1 ring-white/20 animate-float">
-            <Image
-              src="/brand/logo-master.png"
-              alt="نظارات الفرنسي بلاس للبصريات والسمعيات"
-              width={260}
-              height={140}
-              priority
-              className="object-contain max-h-[140px] sm:max-h-[160px] drop-shadow-[0_10px_20px_rgba(244,196,0,0.25)]"
-            />
-          </div>
+      {/* Pure Floating Logo (No Card / No Box / No Background) */}
+      <div className="relative flex flex-col items-center justify-center p-4 max-w-lg mx-auto text-center z-10">
+        
+        {/* Floating Transparent Logo directly */}
+        <div className="relative mb-6 animate-float">
+          <Image
+            src="/brand/logo-primary.png"
+            alt="نظارات الفرنسي بلاس للبصريات والسمعيات"
+            width={340}
+            height={160}
+            priority
+            className="object-contain max-w-[280px] sm:max-w-[360px] h-auto drop-shadow-[0_15px_35px_rgba(244,196,0,0.4)]"
+          />
         </div>
 
-        {/* Slogan & Title */}
-        <div className="space-y-2 mt-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F4C400]/10 border border-[#F4C400]/20 text-[#F4C400] text-xs font-extrabold tracking-wide">
+        {/* Slogan & Subtitle */}
+        <div className="space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F4C400]/10 border border-[#F4C400]/30 text-[#F4C400] text-xs font-extrabold tracking-wide shadow-sm">
             <Sparkles className="w-3.5 h-3.5" />
             <span>نظارات الفرنسي بلاس للبصريات والسمعيات</span>
           </div>
 
-          <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight drop-shadow-md">
+          <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight drop-shadow-lg">
             أناقة وإبداع .. رؤية بلا صداع
           </h2>
-          <p className="text-xs sm:text-sm text-slate-300 font-medium max-w-xs mx-auto">
-            أحدث النظارات الطبية والشمسية، فحص نظري بدقة عالية، وحلول سمعية متطورة
-          </p>
         </div>
 
-        {/* Progress Bar Container */}
+        {/* Progress Bar */}
         <div className="w-48 sm:w-64 h-1.5 bg-white/10 rounded-full mt-8 overflow-hidden border border-white/10 p-0.5">
           <div
             className="h-full bg-gradient-to-r from-[#009688] via-[#F4C400] to-[#F4C400] rounded-full transition-all duration-75 ease-out shadow-[0_0_12px_#F4C400]"
