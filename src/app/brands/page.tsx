@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import BrandsSection from "@/components/BrandsSection";
-import { getBrands } from "@/lib/data";
+import PageHero from "@/components/PageHero";
 
 export const metadata = {
   title: "الماركات العالمية",
@@ -16,8 +16,14 @@ export default async function BrandsPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#F7FAFC]">
       <Header />
-      <main className="flex-grow py-12">
-        <BrandsSection brands={brands} />
+      <main className="flex-grow pb-12">
+        <PageHero
+          title="الماركات العالمية المعتمدة"
+          subtitle="أفخم الماركات العالمية الأصلية للإطارات النظارات الطبية والعدسات والحلول السمعية المتطورة."
+        />
+        <div className="pt-8">
+          <BrandsSection brands={brands} />
+        </div>
       </main>
       <Footer />
       <WhatsAppButton />

@@ -9,6 +9,8 @@ import { getProductBySlug } from "@/lib/data";
 import { getProductWhatsAppLink } from "@/lib/whatsapp";
 import { MessageCircle, ShieldCheck, Tag, CheckCircle2, ArrowRight } from "lucide-react";
 
+import PageHero from "@/components/PageHero";
+
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
@@ -50,8 +52,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   return (
     <div className="min-h-screen flex flex-col bg-[#F7FAFC]">
       <Header />
-      <main className="flex-grow py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <main className="flex-grow pb-10">
+        <PageHero
+          title={product.nameAr}
+          subtitle={`التفاصيل والمواصفات لمنتج ${product.nameAr}`}
+        />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-8">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <Link href="/" className="hover:text-[#071A2B]">الرئيسية</Link>

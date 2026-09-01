@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ServicesSection from "@/components/ServicesSection";
-import { getServices } from "@/lib/data";
+import PageHero from "@/components/PageHero";
 
 export const metadata = {
   title: "خدمات البصريات والسمعيات",
@@ -16,8 +16,14 @@ export default async function ServicesPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#F7FAFC]">
       <Header />
-      <main className="flex-grow py-12">
-        <ServicesSection services={services} />
+      <main className="flex-grow pb-12">
+        <PageHero
+          title="خدمات البصريات والسمعيات"
+          subtitle="نقدم خدمات فحص النظر الكمبيوتري، تفصيل العدسات الطبية، وتجربة أحدث السماعات الطبية الرقمية لدى مركزنا."
+        />
+        <div className="pt-8">
+          <ServicesSection services={services} />
+        </div>
 
         {/* Booking CTA Banner */}
         <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
