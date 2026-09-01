@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import FeaturedProducts from "@/components/FeaturedProducts";
 import PageHero from "@/components/PageHero";
+import { getAllProducts, getCategories, getBrands } from "@/lib/data";
 
 export const metadata = {
   title: "كتالوج المنتجات والنظارات",

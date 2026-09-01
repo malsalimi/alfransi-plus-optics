@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import BrandsSection from "@/components/BrandsSection";
 import PageHero from "@/components/PageHero";
+import { getBrands } from "@/lib/data";
 
 export const metadata = {
   title: "الماركات العالمية",

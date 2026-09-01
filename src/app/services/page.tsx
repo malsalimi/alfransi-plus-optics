@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ServicesSection from "@/components/ServicesSection";
 import PageHero from "@/components/PageHero";
+import { getServices } from "@/lib/data";
 
 export const metadata = {
   title: "خدمات البصريات والسمعيات",
