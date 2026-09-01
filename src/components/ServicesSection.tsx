@@ -77,7 +77,6 @@ export default function ServicesSection({ services }: { services: any[] }) {
         {/* Services Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {displayList.map((item, idx) => {
-            const IconComp = item.icon || (idx === 2 ? Volume2 : idx === 1 ? Glasses : Eye);
             let parsedFeatures: string[] = [];
             try {
               if (typeof item.featuresAr === "string") {
@@ -89,22 +88,37 @@ export default function ServicesSection({ services }: { services: any[] }) {
               parsedFeatures = [];
             }
 
+            const nameText = isArabic ? item.nameAr || item.name : item.nameEn || item.name;
+            const descText = isArabic ? item.descAr || item.desc : item.descEn || item.desc;
+            const iconStr = typeof item.icon === "string" ? item.icon.toLowerCase() : "";
+            const nameLower = (nameText || "").toLowerCase();
+
+            // Determine Lucide Icon Component
+            let IconComponent = Sparkles;
+            if (iconStr.includes("eye") || nameLower.includes("نظر") || nameLower.includes("فحص") || nameLower.includes("كمبيوتر") || idx === 0) {
+              IconComponent = Eye;
+            } else if (iconStr.includes("glass") || nameLower.includes("عدس") || nameLower.includes("تفصيل") || nameLower.includes("نظار") || idx === 1) {
+              IconComponent = Glasses;
+            } else if (iconStr.includes("vol") || iconStr.includes("hear") || nameLower.includes("سمع") || item.type === "AUDIOLOGY" || idx === 2) {
+              IconComponent = Volume2;
+            }
+
             return (
               <div
                 key={item.id || idx}
                 className="bg-[#F7FAFC] rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-xl hover:border-[#087E8B] transition-all flex flex-col justify-between group"
               >
                 <div className="space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#071A2B] text-[#F4C400] flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <IconComp className="w-6 h-6" />
+                  <div className="w-12 h-12 rounded-xl bg-[#071A2B] text-[#F4C400] flex items-center justify-center group-hover:scale-110 transition-transform shadow-md">
+                    <IconComponent className="w-6 h-6 text-[#F4C400]" />
                   </div>
 
                   <h3 className="text-xl font-bold text-[#071A2B]">
-                    {isArabic ? item.nameAr || item.name : item.nameEn || item.name}
+                    {nameText}
                   </h3>
 
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    {isArabic ? item.descAr || item.desc : item.descEn || item.desc}
+                    {descText}
                   </p>
 
                   {parsedFeatures.length > 0 && (
