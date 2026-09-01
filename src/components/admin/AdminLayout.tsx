@@ -105,7 +105,7 @@ export default function AdminLayout({
             <div className="relative h-10 w-auto">
               <Image
                 src="/brand/logo-header.png"
-                alt="نظارات الفرنسي بلس"
+                alt="نظارات الفرنسي بلاس"
                 width={160}
                 height={40}
                 className="h-10 w-auto object-contain"
@@ -218,7 +218,7 @@ export default function AdminLayout({
             </Link>
 
             <div className="text-[10px] text-slate-400 text-center space-y-1">
-              <p>نظام إدارة نظارات الفرنسي بلس v1.0</p>
+              <p>نظام إدارة نظارات الفرنسي بلاس v1.0</p>
               <p className="text-[#087E8B]">للبصريات والسمعيات - صنعاء</p>
             </div>
           </div>

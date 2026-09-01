@@ -6,7 +6,7 @@ import LocationSection from "@/components/LocationSection";
 
 export const metadata = {
   title: "تواصل معنا",
-  description: "أرقام التواصل المباشر، الواتساب، وأوقات العمل لمركز نظارات الفرنسي بلس للبصريات والسمعيات في صنعاء.",
+  description: "أرقام التواصل المباشر، الواتساب، وأوقات العمل لمركز نظارات الفرنسي بلاس للبصريات والسمعيات في صنعاء.",
 };
 
 export default function ContactPage() {

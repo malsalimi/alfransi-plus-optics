@@ -16,7 +16,7 @@ export function formatWhatsAppNumber(phone: string): string {
 
 export function getGeneralWhatsAppLink(isArabic: boolean = true): string {
   const message = isArabic
-    ? "السلام عليكم، أتواصل معكم عبر الموقع الإلكتروني لـ مركز نظارات الفرنسي بلس للاستفسار عن الخدمات والمعروضات."
+    ? "السلام عليكم، أتواصل معكم عبر الموقع الإلكتروني لـ مركز نظارات الفرنسي بلاس للاستفسار عن الخدمات والمعروضات."
     : "Hello, I am contacting you via the official Al-Fransi Plus Optics website to inquire about your services and products.";
   
   const formattedNumber = formatWhatsAppNumber(WHATSAPP_NUMBER);
@@ -32,7 +32,7 @@ export function getProductWhatsAppLink(
   let message = "";
 
   if (isArabic) {
-    message = `السلام عليكم، أتواصل معكم عبر الموقع الإلكتروني لـ مركز نظارات الفرنسي بلس للاستفسار عن هذا المنتج:\n- اسم المنتج: ${productName}`;
+    message = `السلام عليكم، أتواصل معكم عبر الموقع الإلكتروني لـ مركز نظارات الفرنسي بلاس للاستفسار عن هذا المنتج:\n- اسم المنتج: ${productName}`;
     if (sku) message += `\n- رمز المنتج (SKU): ${sku}`;
   } else {
     message = `Hello, I am contacting you via the official Al-Fransi Plus Optics website regarding this product:\n- Product Name: ${productName}`;
@@ -51,7 +51,7 @@ export function getAppointmentWhatsAppLink(
   let message = "";
 
   if (isArabic) {
-    message = `السلام عليكم، أتواصل معكم عبر الموقع الإلكتروني لـ مركز نظارات الفرنسي بلس لحجز موعد لخدمة (${serviceName}).`;
+    message = `السلام عليكم، أتواصل معكم عبر الموقع الإلكتروني لـ مركز نظارات الفرنسي بلاس لحجز موعد لخدمة (${serviceName}).`;
     if (customerName) message += `\n- الاسم: ${customerName}`;
   } else {
     message = `Hello, I am contacting you via the official Al-Fransi Plus Optics website to book an appointment for (${serviceName}).`;

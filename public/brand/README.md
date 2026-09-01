@@ -1,4 +1,4 @@
-# Brand Asset Kit — الفرنسي بلس / Al-Fransi Plus Optics & Audiology
+# Brand Asset Kit — الفرنسي بلاس / Al-Fransi Plus Optics & Audiology
 
 Derived from the single supplied master logo. No typography, wording,
 proportions, or colors were redesigned — every file below is a crop,
@@ -25,7 +25,7 @@ what was done instead.
 
 ## What's in each asset
 
-- **`logo-primary`** — glasses emblem + "الفرنسي بلس" + "للبصريات
+- **`logo-primary`** — glasses emblem + "الفرنسي بلاس" + "للبصريات
   والسمعيات." Slogan line and phone numbers removed (only from this
   derivative) because they become unreadable at header sizes. This is the
   main website logo.
@@ -74,7 +74,7 @@ what was done instead.
 ## Safe area & minimum sizes
 
 - **Clear space:** keep padding around any logo file equal to at least the
-  height of the "الفرنسي بلس" wordmark inside it (~15% of the asset's own
+  height of the "الفرنسي بلاس" wordmark inside it (~15% of the asset's own
   height) — don't crop further or let other elements touch the glasses
   frame.
 - **Minimum digital size:** don't display `logo-primary` narrower than
@@ -107,7 +107,7 @@ what was done instead.
 
 3. **The glasses frame and the wordmark are visually fused** — the gold
    lenses are literally shaped from the letter "م" and a "+", and the frame
-   arcs are wrapped directly around "الفرنسي بلس." There is no clean seam
+   arcs are wrapped directly around "الفرنسي بلاس." There is no clean seam
    to cut a "logo only, zero text" mark without erasing part of the actual
    artwork. `logo-mark` and the favicon glyph solve this by using the
    emblem sub-region (lenses + "+") rather than inventing a new icon —

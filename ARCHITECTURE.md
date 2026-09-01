@@ -1,7 +1,7 @@
 # Architecture Specification: Al-Fransi Plus Optics & Audiology
 
 ## Overview
-Al-Fransi Plus Optics & Audiology (نظارات الفرنسي بلس) is an Arabic-first, production-ready enterprise business web platform built on Next.js 15 App Router, React 19, TypeScript, Tailwind CSS v4, and Prisma ORM.
+Al-Fransi Plus Optics & Audiology (نظارات الفرنسي بلاس) is an Arabic-first, production-ready enterprise business web platform built on Next.js 15 App Router, React 19, TypeScript, Tailwind CSS v4, and Prisma ORM.
 
 ## System Topology
 ```

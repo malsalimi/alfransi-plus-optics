@@ -92,7 +92,7 @@ export default async function AdminInquiriesPage() {
               const formattedPhone = formatWhatsAppNumber(item.phone);
               const isUnread = item.status === "UNREAD";
               const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(
-                `السلام عليكم، الأخ/ت (${item.name})، أتواصل معك من إدارة مركز نظارات الفرنسي بلس بخصوص استفسارك:\n"${item.message}"`
+                `السلام عليكم، الأخ/ت (${item.name})، أتواصل معك من إدارة مركز نظارات الفرنسي بلاس بخصوص استفسارك:\n"${item.message}"`
               )}`;
 
               return (

@@ -6,7 +6,7 @@ import AppointmentForm from "@/components/AppointmentModal";
 
 export const metadata = {
   title: "حجز موعد فحص",
-  description: "احجز موعد فحص النظر أو تقييم السمع بسهولة في مركز نظارات الفرنسي بلس بصنعاء.",
+  description: "احجز موعد فحص النظر أو تقييم السمع بسهولة في مركز نظارات الفرنسي بلاس بصنعاء.",
 };
 
 export default function AppointmentsPage() {

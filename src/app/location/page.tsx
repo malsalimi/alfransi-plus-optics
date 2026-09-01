@@ -6,7 +6,7 @@ import LocationSection from "@/components/LocationSection";
 
 export const metadata = {
   title: "موقع المحل والخريطة",
-  description: "عنوان وموقع مركز نظارات الفرنسي بلس في صنعاء - سعوان، أمام نايس وير جوار شركة الأثير موبايل.",
+  description: "عنوان وموقع مركز نظارات الفرنسي بلاس في صنعاء - سعوان، أمام نايس وير جوار شركة الأثير موبايل.",
 };
 
 export default function LocationPage() {

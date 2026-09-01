@@ -1,6 +1,6 @@
 # Brand Asset Inventory & Audit Report
 
-**Brand Name:** نظارات الفرنسي بلس — Al-Fransi Plus Optics & Audiology  
+**Brand Name:** نظارات الفرنسي بلاس — Al-Fransi Plus Optics & Audiology  
 **Primary Color Palette:**
 - Primary Gold: `#F8C10C` / `#F4C400`
 - Deep Navy: `#071A2B`
@@ -15,7 +15,7 @@
 
 | Asset File | Usage & Purpose | Dimensions | Format | Notes / Optimization |
 | :--- | :--- | :--- | :--- | :--- |
-| `logo-primary.png` / `.webp` | Primary website logo (Header & Navigation) | 598 × 267 | PNG / WebP | Clean composition: Glasses emblem + "الفرنسي بلس" + "للبصريات والسمعيات". Phone numbers and tiny slogan removed for optimal legibility at header height. |
+| `logo-primary.png` / `.webp` | Primary website logo (Header & Navigation) | 598 × 267 | PNG / WebP | Clean composition: Glasses emblem + "الفرنسي بلاس" + "للبصريات والسمعيات". Phone numbers and tiny slogan removed for optimal legibility at header height. |
 | `logo-header.png` | Header navigation brand logo | 598 × 267 | PNG | High-density retina rendering with `h-12 sm:h-14` responsive height. |
 | `logo-footer.png` / `.webp` | Footer brand presentation logo | 606 × 273 | PNG / WebP | Clean composition formatted for larger footer bounds (~240px width). Excludes phone numbers to rely on accessible HTML text. |
 | `logo-marketing.png` / `.webp` | Social marketing, WhatsApp banners & posters | 598 × 333 | PNG / WebP | Complete full lockup featuring glasses emblem, wordmark, tagline, slogan, and phone numbers. |

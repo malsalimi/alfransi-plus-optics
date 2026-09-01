@@ -7,7 +7,7 @@ import { getAllProducts, getCategories, getBrands } from "@/lib/data";
 
 export const metadata = {
   title: "كتالوج المنتجات والنظارات",
-  description: "تصفح أحدث النظارات الطبية، النظارات الشمسية، العدسات اللاصقة، والسماعات السمعية لدى نظارات الفرنسي بلس في صنعاء.",
+  description: "تصفح أحدث النظارات الطبية، النظارات الشمسية، العدسات اللاصقة، والسماعات السمعية لدى نظارات الفرنسي بلاس في صنعاء.",
 };
 
 export default async function ProductsPage({

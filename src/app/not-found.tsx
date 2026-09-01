@@ -17,7 +17,7 @@ export default function NotFound() {
           <div className="relative h-14 w-auto mx-auto flex items-center justify-center">
             <Image
               src="/brand/logo-header.png"
-              alt="نظارات الفرنسي بلس"
+              alt="نظارات الفرنسي بلاس"
               width={200}
               height={50}
               className="h-14 w-auto object-contain"
@@ -47,7 +47,7 @@ export default function NotFound() {
         </div>
 
         <div className="pt-4 border-t border-white/10 text-xs text-slate-400">
-          <span>نظارات الفرنسي بلس للبصريات والسمعيات - صنعاء</span>
+          <span>نظارات الفرنسي بلاس للبصريات والسمعيات - صنعاء</span>
         </div>
       </div>
     </div>

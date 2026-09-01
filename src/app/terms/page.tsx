@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "الشروط والأحكام",
-  description: "الشروط والأحكام الخاصة باستعمال منصة وخدمات مركز نظارات الفرنسي بلس.",
+  description: "الشروط والأحكام الخاصة باستعمال منصة وخدمات مركز نظارات الفرنسي بلاس.",
 };
 
 export default function TermsPage() {
@@ -15,7 +15,7 @@ export default function TermsPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-slate-800">
           <h1 className="text-3xl font-extrabold text-[#071A2B]">الشروط والأحكام</h1>
           <p className="text-xs text-slate-600 leading-relaxed">
-            أهلاً بكم في المنصة الرقمية الرسمية لمركز نظارات الفرنسي بلس للبصريات والسمعيات. تصفح الموقع واستخدام الخدمات يخضع للشروط التالية:
+            أهلاً بكم في المنصة الرقمية الرسمية لمركز نظارات الفرنسي بلاس للبصريات والسمعيات. تصفح الموقع واستخدام الخدمات يخضع للشروط التالية:
           </p>
 
           <div className="space-y-4 text-xs text-slate-700">

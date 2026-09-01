@@ -1,4 +1,4 @@
-# Brand Colors — الفرنسي بلس (Al-Fransi Plus Optics & Audiology)
+# Brand Colors — الفرنسي بلاس (Al-Fransi Plus Optics & Audiology)
 
 Colors below were extracted directly from the supplied master logo
 (`/brand/original/logo-master.png`) by sampling its opaque pixels. Nothing

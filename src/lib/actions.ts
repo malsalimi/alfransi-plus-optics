@@ -106,7 +106,7 @@ export async function loginAdminAction(prevState: any, formData: FormData) {
       user = await prisma.user.create({
         data: {
           username: "admin",
-          name: "إدارة نظارات الفرنسي بلس",
+          name: "إدارة نظارات الفرنسي بلاس",
           passwordHash,
           role: "ADMIN",
         },

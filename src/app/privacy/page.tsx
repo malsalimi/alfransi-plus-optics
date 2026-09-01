@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "سياسة الخصوصية",
-  description: "سياسة الخصوصية وحماية بيانات العملاء لدى مركز نظارات الفرنسي بلس.",
+  description: "سياسة الخصوصية وحماية بيانات العملاء لدى مركز نظارات الفرنسي بلاس.",
 };
 
 export default function PrivacyPage() {
@@ -15,7 +15,7 @@ export default function PrivacyPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-slate-800">
           <h1 className="text-3xl font-extrabold text-[#071A2B]">سياسة الخصوصية</h1>
           <p className="text-xs text-slate-600 leading-relaxed">
-            يلتزم مركز نظارات الفرنسي بلس للبصريات والسمعيات بحماية خصوصية زواره وعملائه الكرام. توضح هذه السياسة كيفية جمع البيانات واستخدامها وحمايتها:
+            يلتزم مركز نظارات الفرنسي بلاس للبصريات والسمعيات بحماية خصوصية زواره وعملائه الكرام. توضح هذه السياسة كيفية جمع البيانات واستخدامها وحمايتها:
           </p>
 
           <div className="space-y-4 text-xs text-slate-700">

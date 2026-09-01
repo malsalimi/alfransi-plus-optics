@@ -100,7 +100,7 @@ export default async function AdminAppointmentsPage() {
                   {appointments.map((item) => {
                     const formattedPhone = formatWhatsAppNumber(item.phone);
                     const whatsappMsg = encodeURIComponent(
-                      `السلام عليكم أخ/ت (${item.customerName})، أتواصل معك من مركز نظارات الفرنسي بلس لتأكيد موعدك لـ (${item.serviceNameAr}) بتاريخ ${item.preferredDate} (${item.preferredTime}).`
+                      `السلام عليكم أخ/ت (${item.customerName})، أتواصل معك من مركز نظارات الفرنسي بلاس لتأكيد موعدك لـ (${item.serviceNameAr}) بتاريخ ${item.preferredDate} (${item.preferredTime}).`
                     );
                     const whatsappUrl = `https://wa.me/${formattedPhone}?text=${whatsappMsg}`;
 

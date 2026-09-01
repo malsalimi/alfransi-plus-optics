@@ -73,7 +73,7 @@ export default async function AdminDashboardPage() {
               مرحباً بك، {session.username} 👋
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed">
-              إليك الملخص اليومي لحركة الحجوزات والمنتجات واستفسارات العملاء في مركز نظارات الفرنسي بلس.
+              إليك الملخص اليومي لحركة الحجوزات والمنتجات واستفسارات العملاء في مركز نظارات الفرنسي بلاس.
             </p>
           </div>
 

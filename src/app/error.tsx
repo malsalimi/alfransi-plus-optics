@@ -29,7 +29,7 @@ export default function Error({
           <div className="relative h-14 w-auto mx-auto flex items-center justify-center">
             <Image
               src="/brand/logo-header.png"
-              alt="نظارات الفرنسي بلس"
+              alt="نظارات الفرنسي بلاس"
               width={200}
               height={50}
               className="h-14 w-auto object-contain"

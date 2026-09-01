@@ -1,6 +1,6 @@
-# Al-Fransi Plus Optics & Audiology (نظارات الفرنسي بلس)
+# Al-Fransi Plus Optics & Audiology (نظارات الفرنسي بلاس)
 
-A production-ready, Arabic-first business platform for **Al-Fransi Plus Optics & Audiology (نظارات الفرنسي بلس للبصريات والسمعيات)** located in Sana'a, Yemen.
+A production-ready, Arabic-first business platform for **Al-Fransi Plus Optics & Audiology (نظارات الفرنسي بلاس للبصريات والسمعيات)** located in Sana'a, Yemen.
 
 ---
 

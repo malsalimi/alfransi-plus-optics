@@ -19,11 +19,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     if (!product) return { title: "المنتج غير موجود" };
 
     return {
-      title: `${product.nameAr} | نظارات الفرنسي بلس`,
+      title: `${product.nameAr} | نظارات الفرنسي بلاس`,
       description: product.descAr,
     };
   } catch {
-    return { title: "تفاصيل المنتج | نظارات الفرنسي بلس" };
+    return { title: "تفاصيل المنتج | نظارات الفرنسي بلاس" };
   }
 }
 

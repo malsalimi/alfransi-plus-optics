@@ -7,7 +7,7 @@ import { HelpCircle } from "lucide-react";
 
 export const metadata = {
   title: "الأسئلة الشائعة",
-  description: "إجابات شائعة حول فحص النظر، تفصيل النظارات الطبية، والحلول السمعية لدى نظارات الفرنسي بلس.",
+  description: "إجابات شائعة حول فحص النظر، تفصيل النظارات الطبية، والحلول السمعية لدى نظارات الفرنسي بلاس.",
 };
 
 export default function FAQPage() {

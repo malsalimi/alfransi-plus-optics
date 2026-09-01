@@ -7,7 +7,7 @@ import { getBrands } from "@/lib/data";
 
 export const metadata = {
   title: "الماركات العالمية",
-  description: "أفضل الماركات العالمية الأصلية للنظارات والعدسات والحلول السمعية متوفرة لدى نظارات الفرنسي بلس.",
+  description: "أفضل الماركات العالمية الأصلية للنظارات والعدسات والحلول السمعية متوفرة لدى نظارات الفرنسي بلاس.",
 };
 
 export default async function BrandsPage() {

@@ -7,7 +7,7 @@ import { getServices } from "@/lib/data";
 
 export const metadata = {
   title: "خدمات البصريات والسمعيات",
-  description: "خدمات فحص النظر الكمبيوتري، تفصيل العدسات الطبية، وتجربة أحدث السماعات الطبية الرقمية لدى مركز نظارات الفرنسي بلس.",
+  description: "خدمات فحص النظر الكمبيوتري، تفصيل العدسات الطبية، وتجربة أحدث السماعات الطبية الرقمية لدى مركز نظارات الفرنسي بلاس.",
 };
 
 export default async function ServicesPage() {
@@ -26,7 +26,7 @@ export default async function ServicesPage() {
               جاهز لفحص النظر أو استشارة السمعيات؟
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
-              احجز موعدك بسهولة مع كادرنا المتخصص بأحدث الأجهزة الإلكترونية في مركز نظارات الفرنسي بلس.
+              احجز موعدك بسهولة مع كادرنا المتخصص بأحدث الأجهزة الإلكترونية في مركز نظارات الفرنسي بلاس.
             </p>
             <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
               <a

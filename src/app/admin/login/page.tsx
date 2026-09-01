@@ -27,14 +27,14 @@ export default function AdminLoginPage() {
           <div className="relative h-14 w-auto mx-auto my-2 flex items-center justify-center">
             <Image
               src="/brand/logo-header.png"
-              alt="نظارات الفرنسي بلس"
+              alt="نظارات الفرنسي بلاس"
               width={220}
               height={56}
               className="h-14 w-auto object-contain"
               priority
             />
           </div>
-          <h1 className="text-lg font-extrabold text-white">لوحة تحكم إدارة نظارات الفرنسي بلس</h1>
+          <h1 className="text-lg font-extrabold text-white">لوحة تحكم إدارة نظارات الفرنسي بلاس</h1>
           <p className="text-xs text-slate-300">تسجيل الدخول للموظفين والإدارة المصرّح لهم</p>
         </div>
 
@@ -95,7 +95,7 @@ export default function AdminLoginPage() {
         </form>
 
         <div className="pt-2 text-center border-t border-white/10 text-[11px] text-slate-400">
-          <span>نظام الإدارة الداخلي • مركز نظارات الفرنسي بلس</span>
+          <span>نظام الإدارة الداخلي • مركز نظارات الفرنسي بلاس</span>
         </div>
       </div>
     </div>
