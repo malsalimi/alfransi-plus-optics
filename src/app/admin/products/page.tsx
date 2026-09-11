@@ -14,16 +14,25 @@ export default async function AdminProductsPage() {
   const session = await getAdminSession();
   if (!session) redirect("/admin/login");
 
-  const [products, categories, pendingAppointmentsCount, unreadInquiriesCount] = await Promise.all([
+  const [
+    products,
+    categories,
+    brands,
+    pendingAppointmentsCount,
+    unreadInquiriesCount,
+    ordersCount,
+  ] = await Promise.all([
     prisma.product
       .findMany({
         include: { category: true, brand: true, images: true },
         orderBy: { createdAt: "desc" },
       })
       .catch(() => []),
-    prisma.category.findMany().catch(() => []),
+    prisma.category.findMany({ orderBy: { nameAr: "asc" } }).catch(() => []),
+    prisma.brand.findMany({ orderBy: { nameAr: "asc" } }).catch(() => []),
     prisma.appointment.count({ where: { status: "PENDING" } }).catch(() => 0),
     prisma.contactInquiry.count({ where: { status: "UNREAD" } }).catch(() => 0),
+    prisma.order.count({ where: { status: "PENDING" } }).catch(() => 0),
   ]);
 
   return (
@@ -31,6 +40,7 @@ export default async function AdminProductsPage() {
       activeTab="products"
       username={session.username}
       counts={{
+        orders: ordersCount,
         appointments: pendingAppointmentsCount,
         products: products.length,
         inquiries: unreadInquiriesCount,
@@ -49,7 +59,7 @@ export default async function AdminProductsPage() {
             </p>
           </div>
 
-          <AddProductModal categories={categories} />
+          <AddProductModal categories={categories} brands={brands} />
         </div>
 
         {/* Products Table Card */}
@@ -115,7 +125,7 @@ export default async function AdminProductsPage() {
 
                       <td className="p-4 text-center">
                         <div className="flex items-center justify-center gap-2">
-                          <EditProductModal product={item} categories={categories} />
+                          <EditProductModal product={item} categories={categories} brands={brands} />
 
                           <form
                             action={async () => {

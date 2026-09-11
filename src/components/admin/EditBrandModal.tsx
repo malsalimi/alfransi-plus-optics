@@ -11,6 +11,7 @@ interface BrandItem {
   logoUrl?: string | null;
   descriptionAr?: string | null;
   descriptionEn?: string | null;
+  isActive?: boolean;
 }
 
 export default function EditBrandModal({ brand }: { brand: BrandItem }) {
@@ -91,6 +92,18 @@ export default function EditBrandModal({ brand }: { brand: BrandItem }) {
                     className="w-full bg-[#040D16] border border-white/10 rounded-xl px-3.5 py-2.5 text-white focus:border-[#16C7D9] outline-none dir-ltr text-right"
                   />
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-bold mb-1.5">حالة الماركة</label>
+                <select
+                  name="isActive"
+                  defaultValue={brand.isActive !== false ? "true" : "false"}
+                  className="w-full bg-[#040D16] border border-white/10 rounded-xl px-3.5 py-2.5 text-white focus:border-[#16C7D9] outline-none"
+                >
+                  <option value="true">نشط (تظهر في الموقع والمعرض)</option>
+                  <option value="false">معطل (مخفية مؤقتاً)</option>
+                </select>
               </div>
 
               {/* Image Input File or URL */}

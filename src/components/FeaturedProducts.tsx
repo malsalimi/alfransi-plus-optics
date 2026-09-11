@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "@/context/LocaleContext";
-import { Sparkles, MessageCircle, ArrowRight, ArrowLeft, Tag, Glasses, Sun, Shield, Eye, Volume2, Search, Filter } from "lucide-react";
+import { Sparkles, MessageCircle, ArrowRight, ArrowLeft, Tag, Glasses, Sun, Shield, Eye, Volume2, Search, Filter, ShoppingBag } from "lucide-react";
 import { getProductWhatsAppLink } from "@/lib/whatsapp";
 
 export default function FeaturedProducts({
@@ -251,22 +251,23 @@ export default function FeaturedProducts({
 
                   {/* Actions & Inquiry */}
                   <div className="p-5 pt-0 space-y-2">
+                    <Link
+                      href={`/products/${product.slug}`}
+                      className="w-full flex items-center justify-center gap-1.5 bg-[#F4C400] hover:bg-[#d99a00] text-[#071A2B] py-2.5 rounded-xl text-xs font-black shadow-md transition-all"
+                    >
+                      <ShoppingBag className="w-4 h-4" />
+                      <span>{isArabic ? "طلب وحجز المنتج الآن" : "Order Product Now"}</span>
+                    </Link>
+
                     <a
                       href={whatsappLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white py-2.5 rounded-xl text-xs font-extrabold shadow-md transition-all"
+                      className="w-full flex items-center justify-center gap-1.5 bg-[#25D366]/10 hover:bg-[#25D366] text-[#25D366] hover:text-white py-2 rounded-xl text-[11px] font-bold border border-[#25D366]/30 transition-all"
                     >
-                      <MessageCircle className="w-4 h-4 fill-current" />
+                      <MessageCircle className="w-3.5 h-3.5 fill-current" />
                       <span>{dict.actions.inquireProduct}</span>
                     </a>
-
-                    <Link
-                      href={`/products/${product.slug}`}
-                      className="w-full flex items-center justify-center gap-1 text-xs font-bold text-slate-600 hover:text-[#071A2B] py-1 transition-colors"
-                    >
-                      <span>{dict.actions.viewDetails}</span>
-                    </Link>
                   </div>
                 </div>
               );

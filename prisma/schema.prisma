@@ -67,6 +67,7 @@ model Product {
   brandId       String?
   brand         Brand?         @relation(fields: [brandId], references: [id], onDelete: SetNull)
   images        ProductImage[]
+  orders        Order[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 }
@@ -129,4 +130,23 @@ model BusinessSetting {
   valueEn   String
   category  String   @default("GENERAL")
   updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id           String   @id @default(uuid())
+  orderNumber  String   @unique
+  customerName String
+  phone        String
+  address      String?
+  productId    String?
+  product      Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productName  String
+  productSku   String?
+  price        Float?
+  quantity     Int      @default(1)
+  totalAmount  Float?
+  notes        String?
+  status       String   @default("PENDING")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

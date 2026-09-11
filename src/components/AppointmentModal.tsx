@@ -1,14 +1,27 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect } from "react";
 import { useLocale } from "@/context/LocaleContext";
 import { createAppointmentAction } from "@/lib/actions";
-import { Calendar, Clock, User, Phone, CheckCircle2, AlertCircle } from "lucide-react";
+import { Calendar, Clock, User, Phone, CheckCircle2, AlertCircle, MessageCircle, ExternalLink, RefreshCw } from "lucide-react";
 
 export default function AppointmentForm() {
   const { locale, dict } = useLocale();
   const isArabic = locale === "ar";
   const [state, formAction, isPending] = useActionState(createAppointmentAction, null);
+
+  useEffect(() => {
+    if (state?.success && state?.whatsappUrl) {
+      const timer = setTimeout(() => {
+        try {
+          window.open(state.whatsappUrl, "_blank");
+        } catch (e) {
+          // popup blocked, fallback button is visible
+        }
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [state]);
 
   const services = [
     { ar: "فحص النظر الكمبيوتري الشامل", en: "Comprehensive Computerized Eye Exam" },
@@ -32,14 +45,56 @@ export default function AppointmentForm() {
       </div>
 
       {state?.success ? (
-        <div className="bg-[#25D366]/10 border border-[#25D366]/40 p-6 rounded-2xl text-center space-y-3 animate-fadeIn">
-          <CheckCircle2 className="w-12 h-12 text-[#25D366] mx-auto" />
-          <h4 className="text-lg font-extrabold text-slate-900">
-            {dict.appointments.successTitle}
-          </h4>
-          <p className="text-xs text-slate-600 leading-relaxed">
-            {dict.appointments.successMessage}
-          </p>
+        <div className="bg-[#25D366]/10 border border-[#25D366]/40 p-6 sm:p-8 rounded-2xl text-center space-y-5 animate-fadeIn">
+          <div className="w-16 h-16 rounded-full bg-[#25D366]/20 border border-[#25D366]/40 flex items-center justify-center mx-auto text-[#25D366]">
+            <CheckCircle2 className="w-10 h-10" />
+          </div>
+
+          <div className="space-y-1">
+            <h4 className="text-xl font-black text-slate-900">
+              {dict.appointments.successTitle}
+            </h4>
+            <p className="text-xs text-slate-600 leading-relaxed max-w-md mx-auto">
+              {isArabic
+                ? "تم تسجيل وحفظ بيانات حجزك بنجاح في لوحة تحكم إدارة المركز. تم فتح نافذة الواتساب، أو اضغط الزر بالأسفل لإرسال بيانات الحجز مباشرة إلى رقم الواتساب الرسمي للمركز."
+                : "Your appointment has been registered and saved in our admin dashboard. Please click the button below to send your appointment details to our official WhatsApp."}
+            </p>
+          </div>
+
+          {state.whatsappUrl && (
+            <div className="pt-2 space-y-3">
+              <a
+                href={state.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20ba59] text-white py-4 px-6 rounded-2xl font-black text-sm shadow-xl shadow-[#25D366]/30 transition-all transform hover:-translate-y-0.5"
+              >
+                <MessageCircle className="w-5 h-5 fill-current" />
+                <span>
+                  {isArabic
+                    ? "إرسال وتأكيد الحجز عبر الواتساب (773945678)"
+                    : "Send & Confirm Appointment via WhatsApp (773945678)"}
+                </span>
+                <ExternalLink className="w-4 h-4" />
+              </a>
+
+              <p className="text-[11px] text-slate-500">
+                {isArabic
+                  ? "✓ تم حفظ الحجز في قاعدة بيانات لوحة تحكم المركز"
+                  : "✓ Saved to admin system database"}
+              </p>
+            </div>
+          )}
+
+          <div className="pt-4 border-t border-slate-200/60">
+            <button
+              onClick={() => window.location.reload()}
+              className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>{isArabic ? "حجز موعد آخر" : "Book another appointment"}</span>
+            </button>
+          </div>
         </div>
       ) : (
         <form action={formAction} className="space-y-4 text-xs">

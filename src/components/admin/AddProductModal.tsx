@@ -9,7 +9,18 @@ interface CategoryOption {
   nameAr: string;
 }
 
-export default function AddProductModal({ categories }: { categories: CategoryOption[] }) {
+interface BrandOption {
+  id: string;
+  nameAr: string;
+}
+
+export default function AddProductModal({
+  categories,
+  brands = [],
+}: {
+  categories: CategoryOption[];
+  brands?: BrandOption[];
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [state, formAction, isPending] = useActionState(createProductAction, null);
 
@@ -102,6 +113,23 @@ export default function AddProductModal({ categories }: { categories: CategoryOp
                 </div>
 
                 <div>
+                  <label className="block text-slate-300 font-bold mb-1.5">الماركة (اختياري)</label>
+                  <select
+                    name="brandId"
+                    className="w-full bg-[#040D16] border border-white/10 rounded-xl px-3.5 py-2.5 text-white focus:border-[#16C7D9] outline-none"
+                  >
+                    <option value="">بدون ماركة محددة...</option>
+                    {brands.map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.nameAr}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
                   <label className="block text-slate-300 font-bold mb-1.5">رمز المنتج (SKU)</label>
                   <input
                     type="text"
@@ -109,6 +137,18 @@ export default function AddProductModal({ categories }: { categories: CategoryOp
                     placeholder="مثال: OPT-2026-01"
                     className="w-full bg-[#040D16] border border-white/10 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:border-[#16C7D9] outline-none font-mono"
                   />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-bold mb-1.5">حالة التوفر</label>
+                  <select
+                    name="isAvailable"
+                    defaultValue="true"
+                    className="w-full bg-[#040D16] border border-white/10 rounded-xl px-3.5 py-2.5 text-white focus:border-[#16C7D9] outline-none"
+                  >
+                    <option value="true">متوفر في المحل</option>
+                    <option value="false">غير متوفر (نفذ)</option>
+                  </select>
                 </div>
               </div>
 

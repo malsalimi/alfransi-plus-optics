@@ -17,14 +17,16 @@ import {
   X,
   KeyRound,
   Tag,
+  ShoppingBag,
 } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
-  activeTab: "dashboard" | "appointments" | "products" | "inquiries" | "brands" | "settings";
+  activeTab: "dashboard" | "appointments" | "orders" | "products" | "inquiries" | "brands" | "settings";
   username: string;
   counts?: {
     appointments?: number;
+    orders?: number;
     products?: number;
     inquiries?: number;
     brands?: number;
@@ -46,6 +48,14 @@ export default function AdminLayout({
       href: "/admin/dashboard",
       icon: LayoutDashboard,
       badge: null,
+    },
+    {
+      id: "orders",
+      label: "طلبات الشراء والمنتجات",
+      href: "/admin/orders",
+      icon: ShoppingBag,
+      badge: counts.orders ? counts.orders : null,
+      badgeColor: "bg-[#16C7D9] text-[#071A2B]",
     },
     {
       id: "appointments",

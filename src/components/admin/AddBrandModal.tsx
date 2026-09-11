@@ -82,6 +82,18 @@ export default function AddBrandModal() {
                 </div>
               </div>
 
+              <div>
+                <label className="block text-slate-300 font-bold mb-1.5">حالة الماركة</label>
+                <select
+                  name="isActive"
+                  defaultValue="true"
+                  className="w-full bg-[#040D16] border border-white/10 rounded-xl px-3.5 py-2.5 text-white focus:border-[#16C7D9] outline-none"
+                >
+                  <option value="true">نشط (تظهر في الموقع والمعرض)</option>
+                  <option value="false">معطل (مخفية مؤقتاً)</option>
+                </select>
+              </div>
+
               {/* Image Input File or URL */}
               <div className="space-y-3 bg-[#040D16] p-3.5 rounded-2xl border border-white/10">
                 <label className="block text-[#16C7D9] font-bold">شعار / صورة الماركة (رفع ملف أو استخدام رابط)</label>

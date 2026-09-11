@@ -5,6 +5,8 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import LocationSection from "@/components/LocationSection";
 import PageHero from "@/components/PageHero";
 
+import ContactInquiryForm from "@/components/ContactInquiryForm";
+
 export const metadata = {
   title: "تواصل معنا والموقع",
   description: "أرقام التواصل المباشر، الواتساب، وأوقات العمل لمركز نظارات الفرنسي بلاس للبصريات والسمعيات في صنعاء.",
@@ -14,11 +16,17 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#F7FAFC]">
       <Header />
-      <main className="flex-grow">
+      <main className="flex-grow pb-16">
         <PageHero
           title="تواصل معنا وموقع المركز"
           subtitle="يسعدنا استقبال استفساراتكم وحجوزاتكم عبر الواتساب أو الهاتف أو زيارتنا مباشرة في مركزنا بصنعاء."
         />
+        
+        {/* Contact Form Section */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10 mb-16">
+          <ContactInquiryForm />
+        </section>
+
         <LocationSection />
       </main>
       <Footer />

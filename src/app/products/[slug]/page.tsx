@@ -10,6 +10,7 @@ import { getProductWhatsAppLink } from "@/lib/whatsapp";
 import { MessageCircle, ShieldCheck, Tag, CheckCircle2, ArrowRight } from "lucide-react";
 
 import PageHero from "@/components/PageHero";
+import ProductActionButtons from "@/components/ProductActionButtons";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -120,17 +121,19 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 </div>
               )}
 
-              {/* Inquiry Action */}
+              {/* Product Actions */}
               <div className="space-y-3 pt-4 border-t border-slate-100">
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white py-3.5 rounded-xl text-sm font-extrabold shadow-lg transition-all"
-                >
-                  <MessageCircle className="w-5 h-5 fill-current" />
-                  <span>أريد الاستفسار عن هذا المنتج عبر واتساب</span>
-                </a>
+                <ProductActionButtons
+                  product={{
+                    id: product.id,
+                    nameAr: product.nameAr,
+                    nameEn: product.nameEn,
+                    sku: product.sku,
+                    price: product.price,
+                    imageUrl: primaryImage,
+                  }}
+                  whatsappLink={whatsappLink}
+                />
 
                 <div className="flex items-center justify-center gap-4 text-[11px] text-slate-500 pt-2">
                   <span className="flex items-center gap-1">

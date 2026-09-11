@@ -17,6 +17,7 @@ import {
   Eye,
   CheckCircle,
   KeyRound,
+  ShoppingBag,
 } from "lucide-react";
 
 export const revalidate = 0;
@@ -31,12 +32,15 @@ export default async function AdminDashboardPage() {
     productsCount,
     appointmentsCount,
     inquiriesCount,
+    ordersCount,
     recentAppointments,
     recentInquiries,
+    recentOrders,
   ] = await Promise.all([
     prisma.product.count().catch(() => 0),
     prisma.appointment.count({ where: { status: "PENDING" } }).catch(() => 0),
     prisma.contactInquiry.count({ where: { status: "UNREAD" } }).catch(() => 0),
+    prisma.order.count({ where: { status: "PENDING" } }).catch(() => 0),
     prisma.appointment
       .findMany({
         take: 5,
@@ -49,6 +53,12 @@ export default async function AdminDashboardPage() {
         orderBy: { createdAt: "desc" },
       })
       .catch(() => []),
+    prisma.order
+      .findMany({
+        take: 5,
+        orderBy: { createdAt: "desc" },
+      })
+      .catch(() => []),
   ]);
 
   return (
@@ -56,6 +66,7 @@ export default async function AdminDashboardPage() {
       activeTab="dashboard"
       username={session.username}
       counts={{
+        orders: ordersCount,
         appointments: appointmentsCount,
         products: productsCount,
         inquiries: inquiriesCount,
@@ -103,7 +114,7 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Key Metric Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-[#0B2940] p-6 rounded-2xl border border-[#087E8B]/40 shadow-lg space-y-3 relative overflow-hidden group hover:border-[#16C7D9]/60 transition-all">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-300">كتالوج المنتجات</span>
@@ -113,13 +124,33 @@ export default async function AdminDashboardPage() {
             </div>
             <div className="space-y-1">
               <h3 className="text-3xl font-black text-white">{productsCount}</h3>
-              <p className="text-[11px] text-slate-400">إجمالي النظارات والسماعات المتاحة</p>
+              <p className="text-[11px] text-slate-400">إجمالي النظارات والسماعات</p>
             </div>
             <Link
               href="/admin/products"
               className="inline-flex items-center gap-1 text-xs font-bold text-[#16C7D9] hover:underline pt-2"
             >
               <span>إدارة الكتالوج</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="bg-[#0B2940] p-6 rounded-2xl border border-[#16C7D9]/40 shadow-lg space-y-3 relative overflow-hidden group hover:border-[#16C7D9]/70 transition-all">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-300">طلبات المنتجات</span>
+              <div className="w-10 h-10 rounded-xl bg-[#16C7D9]/20 border border-[#16C7D9]/40 flex items-center justify-center text-[#16C7D9]">
+                <ShoppingBag className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-3xl font-black text-[#16C7D9]">{ordersCount}</h3>
+              <p className="text-[11px] text-slate-400">طلبات شراء جديدة معلقة</p>
+            </div>
+            <Link
+              href="/admin/orders"
+              className="inline-flex items-center gap-1 text-xs font-bold text-[#16C7D9] hover:underline pt-2"
+            >
+              <span>إدارة الطلبات</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -264,6 +295,69 @@ export default async function AdminDashboardPage() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Recent Orders Card */}
+        <div className="bg-[#0B2940] rounded-2xl border border-[#087E8B]/40 p-6 space-y-4 shadow-lg">
+          <div className="flex items-center justify-between pb-3 border-b border-white/10">
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <ShoppingBag className="w-4 h-4 text-[#16C7D9]" />
+              <span>أحدث طلبات شراء وحجز المنتجات</span>
+            </h3>
+            <Link href="/admin/orders" className="text-xs font-bold text-[#16C7D9] hover:underline">
+              عرض كافة الطلبات ({ordersCount})
+            </Link>
+          </div>
+
+          {recentOrders.length === 0 ? (
+            <p className="text-xs text-slate-400 py-8 text-center">لا توجد طلبات منتجات مسجلة حالياً.</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {recentOrders.map((item: any) => (
+                <div
+                  key={item.id}
+                  className="p-3.5 rounded-xl bg-[#040D16] border border-white/5 flex items-center justify-between gap-3 hover:border-white/10 transition-all"
+                >
+                  <div className="space-y-1 min-w-0">
+                    <div className="text-xs font-bold text-white flex items-center gap-2">
+                      <span className="font-mono text-[#16C7D9] text-[11px]">#{item.orderNumber}</span>
+                      <span className="truncate">{item.customerName}</span>
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                          item.status === "COMPLETED"
+                            ? "bg-green-500/20 text-green-400"
+                            : item.status === "PROCESSING"
+                            ? "bg-[#16C7D9]/20 text-[#16C7D9]"
+                            : "bg-[#F4C400]/20 text-[#F4C400]"
+                        }`}
+                      >
+                        {item.status === "PENDING"
+                          ? "معلق"
+                          : item.status === "PROCESSING"
+                          ? "قيد التجهيز"
+                          : item.status === "COMPLETED"
+                          ? "مكتمل"
+                          : "ملغي"}
+                      </span>
+                    </div>
+                    <div className="text-[11px] text-slate-300 truncate">
+                      {item.productName} {item.totalAmount ? `(${item.totalAmount} ريال)` : ""}
+                    </div>
+                  </div>
+
+                  <a
+                    href={`https://wa.me/${formatWhatsAppNumber(item.phone)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-lg bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366] hover:text-[#071A2B] transition-all shrink-0"
+                    title="مراسلة العميل"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </AdminLayout>

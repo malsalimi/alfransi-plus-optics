@@ -12,14 +12,20 @@ export default async function AdminSettingsPage() {
   const session = await getAdminSession();
   if (!session) redirect("/admin/login");
 
-  const [currentUser, pendingAppointments, unreadInquiries, totalProducts] = await Promise.all([
-    prisma.user.findUnique({
-      where: { id: session.userId },
+  const [currentUser, pendingAppointments, unreadInquiries, totalProducts, pendingOrders] = await Promise.all([
+    prisma.user.findFirst({
+      where: {
+        OR: [
+          { id: session.userId },
+          { username: session.username },
+        ],
+      },
       select: { username: true, name: true, role: true },
     }),
     prisma.appointment.count({ where: { status: "PENDING" } }),
     prisma.contactInquiry.count({ where: { status: "UNREAD" } }),
     prisma.product.count(),
+    prisma.order.count({ where: { status: "PENDING" } }),
   ]);
 
   return (
@@ -27,6 +33,7 @@ export default async function AdminSettingsPage() {
       activeTab="settings"
       username={session.username}
       counts={{
+        orders: pendingOrders,
         appointments: pendingAppointments,
         inquiries: unreadInquiries,
         products: totalProducts,

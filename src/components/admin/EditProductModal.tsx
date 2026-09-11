@@ -9,25 +9,35 @@ interface CategoryOption {
   nameAr: string;
 }
 
+interface BrandOption {
+  id: string;
+  nameAr: string;
+}
+
 interface ProductItem {
   id: string;
   nameAr: string;
   nameEn?: string | null;
   categoryId: string;
+  brandId?: string | null;
   descAr: string;
   descEn?: string | null;
   sku?: string | null;
   price?: number | null;
   stockQuantity: number;
+  isAvailable?: boolean;
+  isFeatured?: boolean;
   images?: { url: string }[];
 }
 
 export default function EditProductModal({
   product,
   categories,
+  brands = [],
 }: {
   product: ProductItem;
   categories: CategoryOption[];
+  brands?: BrandOption[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [state, formAction, isPending] = useActionState(updateProductAction, null);
@@ -128,6 +138,24 @@ export default function EditProductModal({
                 </div>
 
                 <div>
+                  <label className="block text-slate-300 font-bold mb-1.5">الماركة (اختياري)</label>
+                  <select
+                    name="brandId"
+                    defaultValue={product.brandId || ""}
+                    className="w-full bg-[#040D16] border border-white/10 rounded-xl px-3.5 py-2.5 text-white focus:border-[#16C7D9] outline-none"
+                  >
+                    <option value="">بدون ماركة محددة...</option>
+                    {brands.map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.nameAr}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
                   <label className="block text-slate-300 font-bold mb-1.5">رمز المنتج (SKU)</label>
                   <input
                     type="text"
@@ -135,6 +163,30 @@ export default function EditProductModal({
                     defaultValue={product.sku || ""}
                     className="w-full bg-[#040D16] border border-white/10 rounded-xl px-3.5 py-2.5 text-white focus:border-[#16C7D9] outline-none font-mono"
                   />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-bold mb-1.5">حالة التوفر</label>
+                  <select
+                    name="isAvailable"
+                    defaultValue={product.isAvailable !== false ? "true" : "false"}
+                    className="w-full bg-[#040D16] border border-white/10 rounded-xl px-3.5 py-2.5 text-white focus:border-[#16C7D9] outline-none"
+                  >
+                    <option value="true">متوفر في المحل</option>
+                    <option value="false">غير متوفر (نفذ)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-bold mb-1.5">عرض بالرئيسية</label>
+                  <select
+                    name="isFeatured"
+                    defaultValue={product.isFeatured ? "true" : "false"}
+                    className="w-full bg-[#040D16] border border-white/10 rounded-xl px-3.5 py-2.5 text-white focus:border-[#16C7D9] outline-none"
+                  >
+                    <option value="true">نعم (مميز)</option>
+                    <option value="false">لا</option>
+                  </select>
                 </div>
               </div>
 

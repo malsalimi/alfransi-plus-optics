@@ -5,6 +5,11 @@ import { prisma } from "./prisma";
 import bcrypt from "bcryptjs";
 import { setAdminSession, getAdminSession, clearAdminSession } from "./auth";
 import { revalidatePath } from "next/cache";
+import {
+  getDetailedAppointmentWhatsAppLink,
+  getOrderWhatsAppLink,
+  getInquiryWhatsAppLink,
+} from "./whatsapp";
 
 // Appointment Validation Schema
 const appointmentSchema = z.object({
@@ -31,7 +36,7 @@ export async function createAppointmentAction(prevState: any, formData: FormData
 
     const validated = appointmentSchema.parse(rawData);
 
-    await prisma.appointment.create({
+    const appointment = await prisma.appointment.create({
       data: {
         customerName: validated.customerName,
         phone: validated.phone,
@@ -44,8 +49,25 @@ export async function createAppointmentAction(prevState: any, formData: FormData
       },
     });
 
+    const whatsappUrl = getDetailedAppointmentWhatsAppLink({
+      customerName: validated.customerName,
+      phone: validated.phone,
+      serviceNameAr: validated.serviceNameAr,
+      preferredDate: validated.preferredDate,
+      preferredTime: validated.preferredTime,
+      notes: validated.notes || null,
+    });
+
     revalidatePath("/admin/appointments");
-    return { success: true, message: "تم إرسال طلب الحجز بنجاح" };
+    revalidatePath("/admin/dashboard");
+    return {
+      success: true,
+      message: "تم إرسال طلب الحجز وحفظه في النظام بنجاح",
+      whatsappUrl,
+      appointmentId: appointment.id,
+      customerName: validated.customerName,
+      serviceNameAr: validated.serviceNameAr,
+    };
   } catch (error: any) {
     console.error("Appointment error:", error);
     return { success: false, message: error?.errors?.[0]?.message || "حدث خطأ أثناء إرسال البيانات" };
@@ -69,7 +91,7 @@ export async function createInquiryAction(prevState: any, formData: FormData) {
 
     const validated = inquirySchema.parse(rawData);
 
-    await prisma.contactInquiry.create({
+    const inquiry = await prisma.contactInquiry.create({
       data: {
         name: validated.name,
         phone: validated.phone,
@@ -78,11 +100,120 @@ export async function createInquiryAction(prevState: any, formData: FormData) {
       },
     });
 
+    const whatsappUrl = getInquiryWhatsAppLink(
+      validated.name,
+      validated.phone,
+      validated.message
+    );
+
     revalidatePath("/admin/inquiries");
-    return { success: true, message: "تم إرسال استفسارك بنجاح" };
+    revalidatePath("/admin/dashboard");
+    return {
+      success: true,
+      message: "تم إرسال استفسارك وتسجيله في لوحة التحكم بنجاح",
+      whatsappUrl,
+      inquiryId: inquiry.id,
+    };
   } catch (error: any) {
     console.error("Inquiry error:", error);
     return { success: false, message: error?.errors?.[0]?.message || "حدث خطأ أثناء إرسال البيانات" };
+  }
+}
+
+// Product Order Validation Schema
+const orderSchema = z.object({
+  customerName: z.string().min(2, "الاسم مطلوب"),
+  phone: z.string().min(6, "رقم الهاتف غير صحيح"),
+  productName: z.string().min(1, "اسم المنتج مطلوب"),
+  productId: z.string().optional(),
+  productSku: z.string().optional(),
+  price: z.coerce.number().optional(),
+  quantity: z.coerce.number().min(1).default(1),
+  address: z.string().optional(),
+  notes: z.string().optional(),
+});
+
+export async function createOrderAction(prevState: any, formData: FormData) {
+  try {
+    const rawData = {
+      customerName: formData.get("customerName") as string,
+      phone: formData.get("phone") as string,
+      productName: formData.get("productName") as string,
+      productId: (formData.get("productId") as string) || undefined,
+      productSku: (formData.get("productSku") as string) || undefined,
+      price: formData.get("price") ? parseFloat(formData.get("price") as string) : undefined,
+      quantity: formData.get("quantity") ? parseInt(formData.get("quantity") as string, 10) : 1,
+      address: (formData.get("address") as string) || "",
+      notes: (formData.get("notes") as string) || "",
+    };
+
+    const validated = orderSchema.parse(rawData);
+    const orderNumber = `ORD-${Date.now().toString().slice(-6)}`;
+    const totalAmount = validated.price ? validated.price * validated.quantity : null;
+
+    const order = await prisma.order.create({
+      data: {
+        orderNumber,
+        customerName: validated.customerName,
+        phone: validated.phone,
+        productName: validated.productName,
+        productId: validated.productId || null,
+        productSku: validated.productSku || null,
+        price: validated.price || null,
+        quantity: validated.quantity,
+        totalAmount,
+        address: validated.address || null,
+        notes: validated.notes || null,
+        status: "PENDING",
+      },
+    });
+
+    const whatsappUrl = getOrderWhatsAppLink({
+      orderNumber,
+      customerName: validated.customerName,
+      phone: validated.phone,
+      productName: validated.productName,
+      productSku: validated.productSku || null,
+      price: validated.price || null,
+      quantity: validated.quantity,
+      address: validated.address || null,
+      notes: validated.notes || null,
+    });
+
+    revalidatePath("/admin/orders");
+    revalidatePath("/admin/dashboard");
+
+    return {
+      success: true,
+      message: "تم تسجيل طلبك بنجاح وحفظه في لوحة التحكم",
+      orderNumber,
+      whatsappUrl,
+      orderId: order.id,
+    };
+  } catch (error: any) {
+    console.error("Create order error:", error);
+    return {
+      success: false,
+      message: error?.errors?.[0]?.message || "حدث خطأ أثناء تسجيل الطلب",
+    };
+  }
+}
+
+export async function updateOrderStatusAction(
+  id: string,
+  status: "PENDING" | "PROCESSING" | "COMPLETED" | "CANCELLED"
+) {
+  try {
+    await prisma.order.update({
+      where: { id },
+      data: { status },
+    });
+    revalidatePath("/admin/orders");
+    revalidatePath("/admin/dashboard");
+    return { success: true };
+  } catch (error) {
+    console.error("Update order status error:", error);
+    return { success: false };
   }
 }
 
@@ -186,11 +317,14 @@ export async function createProductAction(prevState: any, formData: FormData) {
     const nameAr = formData.get("nameAr") as string;
     const nameEn = formData.get("nameEn") as string;
     const categoryId = formData.get("categoryId") as string;
+    const brandId = (formData.get("brandId") as string) || null;
     const descAr = formData.get("descAr") as string;
     const descEn = (formData.get("descEn") as string) || descAr;
     const priceStr = formData.get("price") as string;
     const sku = formData.get("sku") as string;
     const stockQuantityStr = formData.get("stockQuantity") as string;
+    const isAvailableStr = formData.get("isAvailable") as string | null;
+    const isFeaturedStr = formData.get("isFeatured") as string | null;
     const imageFile = formData.get("imageFile") as File | null;
     const textUrl = formData.get("imageUrl") as string | null;
 
@@ -206,19 +340,20 @@ export async function createProductAction(prevState: any, formData: FormData) {
       .replace(/[^\w\s-]/g, "")
       .replace(/[\s_-]+/g, "-") + "-" + Date.now().toString().slice(-4);
 
-    const product = await prisma.product.create({
+    await prisma.product.create({
       data: {
         slug: slug || `product-${Date.now()}`,
         nameAr,
         nameEn: nameEn || nameAr,
         descAr,
         descEn,
-        sku: sku || null,
-        price: priceStr ? parseFloat(priceStr) : null,
-        stockQuantity: stockQuantityStr ? parseInt(stockQuantityStr, 10) : 10,
+        sku: sku && sku.trim() ? sku.trim() : null,
+        price: priceStr && !isNaN(parseFloat(priceStr)) ? parseFloat(priceStr) : null,
+        stockQuantity: stockQuantityStr && !isNaN(parseInt(stockQuantityStr, 10)) ? parseInt(stockQuantityStr, 10) : 10,
         categoryId,
-        isAvailable: true,
-        isFeatured: true,
+        brandId: brandId && brandId.trim() ? brandId.trim() : null,
+        isAvailable: isAvailableStr !== null ? isAvailableStr === "true" : true,
+        isFeatured: isFeaturedStr === "true",
         images: {
           create: [
             {
@@ -232,7 +367,9 @@ export async function createProductAction(prevState: any, formData: FormData) {
 
     revalidatePath("/products");
     revalidatePath("/admin/products");
-    return { success: true, message: "تمت إضافة المنتج إلى الكتالوج بنجاح" };
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/");
+    return { success: true, message: "تمت إضافة المنتج إلى الكتالوج بنجاح وحفظه في النظام" };
   } catch (error: any) {
     console.error("Create product error:", error);
     return { success: false, message: error?.message || "حدث خطأ أثناء إضافة المنتج" };
@@ -246,11 +383,14 @@ export async function updateProductAction(prevState: any, formData: FormData) {
     const nameAr = formData.get("nameAr") as string;
     const nameEn = formData.get("nameEn") as string;
     const categoryId = formData.get("categoryId") as string;
+    const brandId = (formData.get("brandId") as string) || null;
     const descAr = formData.get("descAr") as string;
     const descEn = (formData.get("descEn") as string) || descAr;
     const priceStr = formData.get("price") as string;
     const sku = formData.get("sku") as string;
     const stockQuantityStr = formData.get("stockQuantity") as string;
+    const isAvailableStr = formData.get("isAvailable") as string | null;
+    const isFeaturedStr = formData.get("isFeatured") as string | null;
     const imageFile = formData.get("imageFile") as File | null;
     const textUrl = formData.get("imageUrl") as string | null;
 
@@ -260,18 +400,28 @@ export async function updateProductAction(prevState: any, formData: FormData) {
 
     const imageUrl = await processImageFileOrUrl(imageFile, textUrl);
 
+    const updateData: any = {
+      nameAr,
+      nameEn: nameEn || nameAr,
+      categoryId,
+      brandId: brandId && brandId.trim() ? brandId.trim() : null,
+      descAr,
+      descEn,
+      sku: sku && sku.trim() ? sku.trim() : null,
+      price: priceStr && !isNaN(parseFloat(priceStr)) ? parseFloat(priceStr) : null,
+      stockQuantity: stockQuantityStr && !isNaN(parseInt(stockQuantityStr, 10)) ? parseInt(stockQuantityStr, 10) : 10,
+    };
+
+    if (isAvailableStr !== null) {
+      updateData.isAvailable = isAvailableStr === "true";
+    }
+    if (isFeaturedStr !== null) {
+      updateData.isFeatured = isFeaturedStr === "true";
+    }
+
     await prisma.product.update({
       where: { id },
-      data: {
-        nameAr,
-        nameEn: nameEn || nameAr,
-        categoryId,
-        descAr,
-        descEn,
-        sku: sku || null,
-        price: priceStr ? parseFloat(priceStr) : null,
-        stockQuantity: stockQuantityStr ? parseInt(stockQuantityStr, 10) : 10,
-      },
+      data: updateData,
     });
 
     if (imageUrl) {
@@ -297,7 +447,9 @@ export async function updateProductAction(prevState: any, formData: FormData) {
 
     revalidatePath("/products");
     revalidatePath("/admin/products");
-    return { success: true, message: "تم تحديث التعديلات بنجاح" };
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/");
+    return { success: true, message: "تم تحديث بيانات وتعديلات المنتج بنجاح" };
   } catch (error: any) {
     console.error("Update product error:", error);
     return { success: false, message: error?.message || "حدث خطأ أثناء التحديث" };
@@ -311,6 +463,7 @@ export async function createBrandAction(prevState: any, formData: FormData) {
     const nameEn = formData.get("nameEn") as string;
     const descriptionAr = formData.get("descriptionAr") as string;
     const descriptionEn = formData.get("descriptionEn") as string;
+    const isActiveStr = formData.get("isActive") as string | null;
     const imageFile = formData.get("imageFile") as File | null;
     const textUrl = formData.get("logoUrl") as string | null;
 
@@ -333,11 +486,15 @@ export async function createBrandAction(prevState: any, formData: FormData) {
         logoUrl,
         descriptionAr,
         descriptionEn,
+        isActive: isActiveStr !== "false",
       },
     });
 
     revalidatePath("/brands");
     revalidatePath("/admin/brands");
+    revalidatePath("/admin/products");
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/");
     return { success: true, message: "تمت إضافة الماركة بنجاح" };
   } catch (error: any) {
     console.error("Create brand error:", error);
@@ -353,6 +510,7 @@ export async function updateBrandAction(prevState: any, formData: FormData) {
     const nameEn = formData.get("nameEn") as string;
     const descriptionAr = formData.get("descriptionAr") as string;
     const descriptionEn = formData.get("descriptionEn") as string;
+    const isActiveStr = formData.get("isActive") as string | null;
     const imageFile = formData.get("imageFile") as File | null;
     const textUrl = formData.get("logoUrl") as string | null;
 
@@ -369,6 +527,9 @@ export async function updateBrandAction(prevState: any, formData: FormData) {
       descriptionEn,
     };
     if (logoUrl) updateData.logoUrl = logoUrl;
+    if (isActiveStr !== null) {
+      updateData.isActive = isActiveStr === "true" || isActiveStr === "on";
+    }
 
     await prisma.brand.update({
       where: { id },
@@ -377,6 +538,9 @@ export async function updateBrandAction(prevState: any, formData: FormData) {
 
     revalidatePath("/brands");
     revalidatePath("/admin/brands");
+    revalidatePath("/admin/products");
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/");
     return { success: true, message: "تم تحديث بيانات الماركة بنجاح" };
   } catch (error: any) {
     console.error("Update brand error:", error);
@@ -392,6 +556,9 @@ export async function deleteBrandAction(id: string) {
     });
     revalidatePath("/brands");
     revalidatePath("/admin/brands");
+    revalidatePath("/admin/products");
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/");
     return { success: true };
   } catch (error) {
     return { success: false };
@@ -416,8 +583,13 @@ export async function updateAdminSecurityAction(prevState: any, formData: FormDa
       return { success: false, message: "يرجى إدخال كلمة المرور الحالية لتأكيد الهوية" };
     }
 
-    const user = await prisma.user.findUnique({
-      where: { id: session.userId },
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { id: session.userId },
+          { username: session.username }
+        ]
+      }
     });
 
     if (!user) {
@@ -427,6 +599,15 @@ export async function updateAdminSecurityAction(prevState: any, formData: FormDa
     const isValidPassword = await bcrypt.compare(currentPassword, user.passwordHash);
     if (!isValidPassword) {
       return { success: false, message: "كلمة المرور الحالية غير صحيحة" };
+    }
+
+    if (newUsername && newUsername.trim() !== user.username) {
+      const duplicate = await prisma.user.findUnique({
+        where: { username: newUsername.trim() }
+      });
+      if (duplicate && duplicate.id !== user.id) {
+        return { success: false, message: "اسم المستخدم الجديد مستخدم بالفعل بحساب آخر" };
+      }
     }
 
     if (newPassword) {
@@ -450,7 +631,7 @@ export async function updateAdminSecurityAction(prevState: any, formData: FormDa
       data: updatedData,
     });
 
-    // Update active JWT session with new username
+    // Update active JWT session with new username and id
     await setAdminSession({
       userId: updatedUser.id,
       username: updatedUser.username,
@@ -458,6 +639,8 @@ export async function updateAdminSecurityAction(prevState: any, formData: FormDa
     });
 
     revalidatePath("/admin");
+    revalidatePath("/admin/settings");
+    revalidatePath("/admin/dashboard");
     return { success: true, message: "تم تحديث بيانات حساب الأدمن وكلمة المرور بنجاح!" };
   } catch (error: any) {
     console.error("Update admin security error:", error);

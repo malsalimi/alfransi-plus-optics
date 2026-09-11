@@ -16,13 +16,14 @@ export default async function AdminBrandsPage() {
   const session = await getAdminSession();
   if (!session) redirect("/admin/login");
 
-  const [brands, pendingAppointments, unreadInquiries, totalProducts] = await Promise.all([
+  const [brands, pendingAppointments, unreadInquiries, totalProducts, pendingOrders] = await Promise.all([
     prisma.brand.findMany({
       orderBy: { createdAt: "desc" },
     }),
     prisma.appointment.count({ where: { status: "PENDING" } }),
     prisma.contactInquiry.count({ where: { status: "UNREAD" } }),
     prisma.product.count(),
+    prisma.order.count({ where: { status: "PENDING" } }),
   ]);
 
   return (
@@ -30,6 +31,7 @@ export default async function AdminBrandsPage() {
       activeTab="brands"
       username={session.username}
       counts={{
+        orders: pendingOrders,
         appointments: pendingAppointments,
         inquiries: unreadInquiries,
         products: totalProducts,
